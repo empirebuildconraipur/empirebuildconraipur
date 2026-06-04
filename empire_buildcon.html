@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Empire Buildcon Raipur | Real Estate CRM</title>
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Chart.js CDN for Charts -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <!-- SheetJS (XLSX) for Excel Export -->
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #eef2f7 0%, #d9e2ec 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    /* Login Overlay */
+    .login-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(8px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+    .login-card {
+      background: white;
+      border-radius: 48px;
+      padding: 40px;
+      width: 400px;
+      text-align: center;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+    }
+    .company-logo-login {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    /* Actual Logo Image Styling */
+    .logo-image {
+      width: 100px;
+      height: 100px;
+      margin: 0 auto 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(145deg, #1a2c3e, #0f1e2a);
+      border-radius: 30px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+    .logo-image i {
+      font-size: 3.5rem;
+      color: #c9a03d;
+    }
+    .company-name-main {
+      font-size: 1.8rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: #b8860b;
+    }
+    .company-sub {
+      font-size: 0.85rem;
+      color: #5f7f8c;
+      font-weight: 500;
+    }
+    .login-card h2 {
+      font-size: 1.4rem;
+      color: #1e6f5c;
+      margin: 20px 0 10px;
+    }
+    .login-card input {
+      width: 100%;
+      padding: 14px;
+      margin: 10px 0;
+      border: 1px solid #cfdfe8;
+      border-radius: 34px;
+      font-size: 1rem;
+    }
+    .login-btn {
+      background: #b8860b;
+      color: white;
+      border: none;
+      width: 100%;
+      padding: 12px;
+      border-radius: 34px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 12px;
+      font-size: 1rem;
+    }
+    .demo-cred {
+      font-size: 0.7rem;
+      margin-top: 20px;
+      color: #6c8a9a;
+    }
+
+    /* Main App */
+    .app-main {
+      display: none;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+
+    /* Header with Company Logo & Brand */
+    .top-bar {
+      background: white;
+      border-radius: 28px;
+      padding: 14px 28px;
+      margin-bottom: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.05);
+    }
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+    /* Real Logo Image Container */
+    .logo-image-container {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(145deg, #1a2c3e, #0f1e2a);
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    .logo-image-container i {
+      font-size: 2.2rem;
+      color: #c9a03d;
+    }
+    .brand-text h1 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: #b8860b;
+      letter-spacing: 1px;
+    }
+    .brand-text p {
+      font-size: 0.7rem;
+      color: #5f7f8c;
+      font-weight: 500;
+    }
+    .user-info {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+    .logout-btn {
+      background: #fee2e2;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    /* Stats row */
+    .stats-row {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+    .stat-card {
+      background: white;
+      flex: 1;
+      min-width: 160px;
+      border-radius: 28px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+      border-top: 4px solid #b8860b;
+    }
+    .stat-number-big {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #1e6f5c;
+    }
+
+    /* Search + action bar */
+    .action-bar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 28px;
+      background: white;
+      padding: 16px 24px;
+      border-radius: 60px;
+      align-items: center;
+    }
+    .search-box {
+      flex: 2;
+      display: flex;
+      gap: 10px;
+      background: #f1f5f9;
+      padding: 6px 16px;
+      border-radius: 48px;
+    }
+    .search-box input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      padding: 12px;
+      font-size: 0.9rem;
+      outline: none;
+    }
+    .export-buttons {
+      display: flex;
+      gap: 12px;
+    }
+    .btn-icon {
+      background: #eef2fa;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 40px;
+      cursor: pointer;
+      font-weight: 500;
+    }
+    .btn-gold {
+      background: #b8860b;
+      color: white;
+    }
+
+    /* Dashboard 3 column grid */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 24px;
+      margin-bottom: 30px;
+    }
+    .card {
+      background: white;
+      border-radius: 32px;
+      overflow: hidden;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+    }
+    .card-header {
+      padding: 18px 24px;
+      font-weight: 700;
+      font-size: 1.2rem;
+      border-bottom: 2px solid #eef2f8;
+      display: flex;
+      justify-content: space-between;
+      background: #fefcf8;
+    }
+    .list-container {
+      max-height: 460px;
+      overflow-y: auto;
+      padding: 16px;
+    }
+    .property-item, .req-item, .visit-item {
+      background: #fafcff;
+      border-radius: 20px;
+      padding: 14px;
+      margin-bottom: 12px;
+      transition: 0.1s;
+      border-left: 4px solid #b8860b;
+      position: relative;
+    }
+    .item-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+      margin-top: 8px;
+    }
+    .edit-icon, .delete-icon {
+      cursor: pointer;
+      font-size: 0.8rem;
+      padding: 5px;
+      color: #6c8a9a;
+    }
+    .edit-icon:hover { color: #f4b942; }
+    .delete-icon:hover { color: #e25c5c; }
+    .status-badge {
+      background: #d9f0ea;
+      padding: 2px 12px;
+      border-radius: 30px;
+      font-size: 0.7rem;
+    }
+
+    /* Chart section */
+    .chart-section {
+      background: white;
+      border-radius: 32px;
+      padding: 20px;
+      margin-top: 20px;
+    }
+    canvas { max-height: 280px; width: 100%; }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top:0;left:0;width:100%;height:100%;
+      background: rgba(0,0,0,0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 10000;
+    }
+    .modal-content {
+      background: white;
+      border-radius: 40px;
+      padding: 30px;
+      width: 90%;
+      max-width: 500px;
+    }
+    .modal-content input, .modal-content select {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border-radius: 28px;
+      border: 1px solid #ccc;
+    }
+    footer { text-align: center; margin-top: 24px; font-size: 0.7rem; color: #5c7a8c; }
+    @media (max-width: 700px) { .action-bar { flex-direction: column; align-items: stretch; } }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN with Empire Buildcon Raipur LOGO (as per your brand) -->
+<div id="loginOverlay" class="login-overlay">
+  <div class="login-card">
+    <div class="company-logo-login">
+      <!-- Logo Section: EMPIRE BUILD CON RAIPUR branding with Icon -->
+      <div class="logo-image">
+        <i class="fas fa-landmark"></i>
+      </div>
+      <div class="company-name-main">EMPIRE BUILDCON</div>
+      <div class="company-sub">RAIPUR | PREMIUM REAL ESTATE</div>
+    </div>
+    <h2><i class="fas fa-key"></i> Login to Dashboard</h2>
+    <input type="text" id="loginUsername" placeholder="Username" value="admin">
+    <input type="password" id="loginPassword" placeholder="Password" value="admin123">
+    <button class="login-btn" id="doLoginBtn"><i class="fas fa-sign-in-alt"></i> Login</button>
+    <div class="demo-cred">🔐 Demo: admin / admin123 &nbsp;&nbsp;|&nbsp;&nbsp; agent / agent123</div>
+    <div class="demo-cred"><i class="fas fa-map-marker-alt"></i> Raipur, Chhattisgarh | Since 2010</div>
+  </div>
+</div>
+
+<!-- MAIN APP with Logo & Empire Buildcon Raipur Header -->
+<div id="appMain" class="app-main">
+  <div class="top-bar">
+    <div class="logo-area">
+      <!-- Company Logo Image Area (Empire Buildcon) -->
+      <div class="logo-image-container">
+        <i class="fas fa-building"></i>
+      </div>
+      <div class="brand-text">
+        <h1>EMPIRE BUILDCON</h1>
+        <p><i class="fas fa-map-pin"></i> Raipur | Premium Real Estate | Trusted Since 2010</p>
+      </div>
+    </div>
+    <div class="user-info">
+      <span><i class="fas fa-user-circle"></i> <span id="currentUserDisplay">Guest</span></span>
+      <button class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    </div>
+  </div>
+
+  <!-- Stats Row -->
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-number-big" id="statProps">0</div><div>Properties</div></div>
+    <div class="stat-card"><div class="stat-number-big" id="statReqs">0</div><div>Requirements</div></div>
+    <div class="stat-card"><div class="stat-number-big" id="statVisits">0</div><div>Visits</div></div>
+    <div class="stat-card"><div class="stat-number-big" id="statSold">0</div><div>Sold Properties</div></div>
+  </div>
+
+  <!-- Search + Export Bar -->
+  <div class="action-bar">
+    <div class="search-box">
+      <i class="fas fa-search"></i>
+      <input type="text" id="globalSearchInput" placeholder="🔍 Search properties, customers, locations in Raipur...">
+    </div>
+    <div class="export-buttons">
+      <button class="btn-icon" id="exportExcelBtn"><i class="fas fa-file-excel"></i> Export to Excel</button>
+      <button class="btn-icon btn-gold" id="refreshChartBtn"><i class="fas fa-chart-simple"></i> Refresh Chart</button>
+    </div>
+  </div>
+
+  <!-- 3-Column Dashboard -->
+  <div class="dashboard-grid">
+    <!-- Property Listings -->
+    <div class="card">
+      <div class="card-header"><span><i class="fas fa-building"></i> Property Listings</span><button class="btn-icon" id="openPropModalBtn" style="background:#b8860b;color:white;">+ Add</button></div>
+      <div class="list-container" id="propertyList"></div>
+    </div>
+    <!-- Customer Requirements -->
+    <div class="card">
+      <div class="card-header"><span><i class="fas fa-users"></i> Customer Requirements</span><button class="btn-icon" id="openReqModalBtn" style="background:#b8860b;color:white;">+ Add</button></div>
+      <div class="list-container" id="requirementList"></div>
+    </div>
+    <!-- Visits -->
+    <div class="card">
+      <div class="card-header"><span><i class="fas fa-calendar-check"></i> Visit Details</span><button class="btn-icon" id="openVisitModalBtn" style="background:#b8860b;color:white;">+ Schedule</button></div>
+      <div class="list-container" id="visitList"></div>
+    </div>
+  </div>
+
+  <!-- Chart Section -->
+  <div class="chart-section">
+    <h4><i class="fas fa-chart-pie"></i> Empire Buildcon Raipur - Property Analytics (Sold vs Available)</h4>
+    <canvas id="propertyChart" width="400" height="200"></canvas>
+  </div>
+  <footer>🏢 EMPIRE BUILDCON RAIPUR | Complete Real Estate Management | Data saved per user | <i class="fas fa-phone-alt"></i> +91-771-XXX-XXXX</footer>
+</div>
+
+<!-- MODALS for Edit/Add -->
+<div id="editPropModal" class="modal"><div class="modal-content"><h3>✏️ Edit Property</h3><input id="editPropId" type="hidden"><input id="editTitle" placeholder="Title"><input id="editLocation" placeholder="Location (Raipur)"><input id="editPrice" placeholder="Price"><input id="editArea" placeholder="Area/BHK"><select id="editStatusSold"><option value="Available">Available</option><option value="Sold">Sold</option></select><div class="item-actions"><button id="saveEditPropBtn" style="background:#b8860b;color:white;padding:8px 20px;border-radius:30px;border:none;">Save</button><button id="closeEditPropBtn" style="padding:8px 20px;">Cancel</button></div></div></div>
+<div id="editReqModal" class="modal"><div class="modal-content"><h3>✏️ Edit Requirement</h3><input id="editReqId" type="hidden"><input id="editCustName" placeholder="Customer"><input id="editBudget" placeholder="Budget"><input id="editPropType" placeholder="Property Type"><input id="editLocPref" placeholder="Location"><button id="saveEditReqBtn" style="background:#b8860b;color:white;padding:8px 20px;border-radius:30px;">Save</button><button id="closeEditReqBtn">Cancel</button></div></div>
+<div id="editVisitModal" class="modal"><div class="modal-content"><h3>✏️ Edit Visit</h3><input id="editVisitId" type="hidden"><input id="editVisitCust" placeholder="Customer"><input id="editVisitRef" placeholder="Property Ref"><input type="date" id="editVisitDate"><input type="time" id="editVisitTime"><select id="editVisitStatus"><option>Scheduled</option><option>Completed</option><option>Cancelled</option></select><button id="saveEditVisitBtn" style="background:#b8860b;color:white;">Save</button><button id="closeEditVisitBtn">Cancel</button></div></div>
+
+<!-- ADD MODALS -->
+<div id="addPropModal" class="modal"><div class="modal-content"><h3>🏠 Add New Property - Raipur</h3><input id="addTitle" placeholder="Title* (e.g., Empire Heights)"><input id="addLocation" placeholder="Location (e.g., VIP Road, Raipur)"><input id="addPrice" placeholder="Price (₹)"><input id="addArea" placeholder="BHK/Area"><select id="addStatus"><option value="Available">Available</option><option value="Sold">Sold</option></select><button id="confirmAddPropBtn" style="background:#b8860b;color:white;">Add Property</button><button id="closeAddPropBtn">Cancel</button></div></div>
+<div id="addReqModal" class="modal"><div class="modal-content"><h3>📋 Add Customer Requirement</h3><input id="addReqName" placeholder="Customer Name*"><input id="addReqBudget" placeholder="Budget Range"><input id="addReqType" placeholder="Property Type (Apartment/Villa)"><input id="addReqLoc" placeholder="Preferred Location (Raipur)"><button id="confirmAddReqBtn" style="background:#b8860b;color:white;">Add Requirement</button><button id="closeAddReqBtn">Cancel</button></div></div>
+<div id="addVisitModal" class="modal"><div class="modal-content"><h3>📅 Schedule Site Visit - Raipur</h3><input id="addVisitCust" placeholder="Customer Name*"><input id="addVisitPropRef" placeholder="Property Reference*"><input type="date" id="addVisitDate"><input type="time" id="addVisitTime"><select id="addVisitStatus"><option>Scheduled</option></select><button id="confirmAddVisitBtn" style="background:#b8860b;color:white;">Schedule Visit</button><button id="closeAddVisitBtn">Cancel</button></div></div>
+
+<script>
+  // EMPIRE BUILDCON RAIPUR - Complete CRM System
+  let currentUser = null;
+  let properties = [], requirements = [], visits = [];
+
+  function loadUserData() {
+    if(!currentUser) return;
+    const prefix = `empire_${currentUser}_`;
+    properties = JSON.parse(localStorage.getItem(prefix+'properties') || '[]');
+    requirements = JSON.parse(localStorage.getItem(prefix+'requirements') || '[]');
+    visits = JSON.parse(localStorage.getItem(prefix+'visits') || '[]');
+    if(properties.length===0){
+      // Default properties for Empire Buildcon Raipur
+      properties = [
+        { id: 'p1', title: 'Empire Heights', location: 'VIP Road, Raipur', price: '₹85 Lac', area: '3 BHK', status: 'Available' },
+        { id: 'p2', title: 'Lake View Residency', location: 'Telibandha, Raipur', price: '₹1.2 Cr', area: '4 BHK', status: 'Available' },
+        { id: 'p3', title: 'Green Valley Apartments', location: 'Shankar Nagar, Raipur', price: '₹65 Lac', area: '2 BHK', status: 'Sold' }
+      ];
+      requirements = [
+        { id: 'r1', customerName: 'Mr. Verma', budget: '₹80L - ₹1Cr', propertyType: 'Apartment', locationPref: 'VIP Road, Raipur' }
+      ];
+      visits = [
+        { id: 'v1', customer: 'Mr. Verma', propertyRef: 'Empire Heights', date: '2026-06-20', time: '11:00 AM', status: 'Scheduled' }
+      ];
+      saveAllData();
+    }
+    renderAll();
+  }
+
+  function saveAllData() {
+    if(!currentUser) return;
+    const prefix = `empire_${currentUser}_`;
+    localStorage.setItem(prefix+'properties', JSON.stringify(properties));
+    localStorage.setItem(prefix+'requirements', JSON.stringify(requirements));
+    localStorage.setItem(prefix+'visits', JSON.stringify(visits));
+  }
+
+  function generateId(prefix){ return prefix+Date.now()+'-'+Math.random().toString(36).substr(2,5); }
+
+  let globalSearchTerm = "";
+  function setSearch(term){ globalSearchTerm = term.toLowerCase(); renderAll(); }
+
+  function filterBySearch(array, fields){
+    if(!globalSearchTerm) return array;
+    return array.filter(item => fields.some(f => (item[f]||'').toString().toLowerCase().includes(globalSearchTerm)));
+  }
+
+  // CRUD Operations
+  window.addProperty = (title,loc,price,area,status='Available')=>{ if(title) properties.push({id:generateId('prop'), title, location:loc, price, area, status}); saveAllData(); renderAll();};
+  window.updateProperty = (id,newData)=>{ let idx=properties.findIndex(p=>p.id==id); if(idx!==-1){ properties[idx]={...properties[idx], ...newData}; saveAllData(); renderAll(); }};
+  window.deleteProperty=(id)=>{ properties=properties.filter(p=>p.id!=id); saveAllData(); renderAll();};
+  window.addRequirement=(name,budget,type,loc)=>{ if(name) requirements.push({id:generateId('req'), customerName:name, budget, propertyType:type, locationPref:loc}); saveAllData(); renderAll();};
+  window.updateRequirement=(id,data)=>{ let i=requirements.findIndex(r=>r.id==id); if(i!==-1){ requirements[i]={...requirements[i],...data}; saveAllData(); renderAll();}};
+  window.deleteRequirement=(id)=>{ requirements=requirements.filter(r=>r.id!=id); saveAllData(); renderAll();};
+  window.addVisit=(cust,ref,date,time,status)=>{ if(cust && ref) visits.push({id:generateId('visit'), customer:cust, propertyRef:ref, date, time, status}); saveAllData(); renderAll();};
+  window.updateVisit=(id,data)=>{ let vi=visits.findIndex(v=>v.id==id); if(vi!==-1){ visits[vi]={...visits[vi],...data}; saveAllData(); renderAll();}};
+  window.deleteVisit=(id)=>{ visits=visits.filter(v=>v.id!=id); saveAllData(); renderAll();};
+
+  function renderAll(){
+    if(!currentUser) return;
+    let filteredProps = filterBySearch(properties, ['title','location','price']);
+    let filteredReqs = filterBySearch(requirements, ['customerName','locationPref','propertyType']);
+    let filteredVisits = filterBySearch(visits, ['customer','propertyRef']);
+    renderProperties(filteredProps);
+    renderRequirements(filteredReqs);
+    renderVisits(filteredVisits);
+    updateStats();
+    updateChart();
+  }
+
+  function renderProperties(propsArr){
+    const container = document.getElementById('propertyList');
+    if(!propsArr.length){ container.innerHTML='<div style="padding:20px;text-align:center;">🏠 No properties in Raipur</div>'; return; }
+    let html='';
+    propsArr.forEach(p=>{
+      html+=`<div class="property-item"><div><strong>🏢 ${escapeHtml(p.title)}</strong> <span class="status-badge">${p.status||'Available'}</span></div>
+      <div>📍 ${escapeHtml(p.location)} | 💰 ${escapeHtml(p.price)} | ${escapeHtml(p.area)}</div>
+      <div class="item-actions"><i class="fas fa-edit edit-icon" data-id="${p.id}" data-type="prop"></i><i class="fas fa-trash delete-icon" data-id="${p.id}" data-type="prop"></i></div></div>`;
+    });
+    container.innerHTML=html;
+    attachEditDeleteEvents('prop');
+  }
+  function renderRequirements(reqArr){
+    const container=document.getElementById('requirementList');
+    if(!reqArr.length){ container.innerHTML='<div style="padding:20px;text-align:center;">📋 No customer requirements</div>'; return; }
+    let html='';
+    reqArr.forEach(r=>{
+      html+=`<div class="req-item"><div><strong>👤 ${escapeHtml(r.customerName)}</strong></div>
+      <div>💰 ${escapeHtml(r.budget)} | 🏷️ ${escapeHtml(r.propertyType)} | 📍 ${escapeHtml(r.locationPref)}</div>
+      <div class="item-actions"><i class="fas fa-edit edit-icon" data-id="${r.id}" data-type="req"></i><i class="fas fa-trash delete-icon" data-id="${r.id}" data-type="req"></i></div></div>`;
+    });
+    container.innerHTML=html;
+    attachEditDeleteEvents('req');
+  }
+  function renderVisits(visArr){
+    const container=document.getElementById('visitList');
+    if(!visArr.length){ container.innerHTML='<div style="padding:20px;text-align:center;">🗓️ No scheduled visits</div>'; return; }
+    let html='';
+    visArr.forEach(v=>{
+      html+=`<div class="visit-item"><div><strong>📅 ${escapeHtml(v.customer)}</strong> → ${escapeHtml(v.propertyRef)}<br><small>${v.date} ${v.time} | ${v.status}</small></div>
+      <div class="item-actions"><i class="fas fa-edit edit-icon" data-id="${v.id}" data-type="visit"></i><i class="fas fa-trash delete-icon" data-id="${v.id}" data-type="visit"></i></div></div>`;
+    });
+    container.innerHTML=html;
+    attachEditDeleteEvents('visit');
+  }
+
+  function attachEditDeleteEvents(type){
+    document.querySelectorAll(`.edit-icon[data-type="${type}"]`).forEach(btn=>{
+      btn.onclick=(e)=>{ e.stopPropagation(); const id=btn.getAttribute('data-id'); openEditModal(type,id); };
+    });
+    document.querySelectorAll(`.delete-icon[data-type="${type}"]`).forEach(btn=>{
+      btn.onclick=(e)=>{ e.stopPropagation(); const id=btn.getAttribute('data-id'); if(confirm('Delete this entry?')) { if(type==='prop') deleteProperty(id); else if(type==='req') deleteRequirement(id); else deleteVisit(id); }};
+    });
+  }
+
+  function openEditModal(type, id){
+    if(type==='prop'){
+      let p=properties.find(x=>x.id==id);
+      if(p){ document.getElementById('editPropId').value=p.id; document.getElementById('editTitle').value=p.title; document.getElementById('editLocation').value=p.location; document.getElementById('editPrice').value=p.price; document.getElementById('editArea').value=p.area; document.getElementById('editStatusSold').value=p.status||'Available'; document.getElementById('editPropModal').style.display='flex'; }
+    } else if(type==='req'){
+      let r=requirements.find(x=>x.id==id);
+      if(r){ document.getElementById('editReqId').value=r.id; document.getElementById('editCustName').value=r.customerName; document.getElementById('editBudget').value=r.budget; document.getElementById('editPropType').value=r.propertyType; document.getElementById('editLocPref').value=r.locationPref; document.getElementById('editReqModal').style.display='flex'; }
+    } else if(type==='visit'){
+      let v=visits.find(x=>x.id==id);
+      if(v){ document.getElementById('editVisitId').value=v.id; document.getElementById('editVisitCust').value=v.customer; document.getElementById('editVisitRef').value=v.propertyRef; document.getElementById('editVisitDate').value=v.date; document.getElementById('editVisitTime').value=v.time; document.getElementById('editVisitStatus').value=v.status; document.getElementById('editVisitModal').style.display='flex'; }
+    }
+  }
+
+  function escapeHtml(str){ if(!str) return ''; return str.replace(/[&<>]/g, function(m){ if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
+
+  let chartInstance = null;
+  function updateChart(){
+    const sold = properties.filter(p=>p.status==='Sold').length;
+    const avail = properties.filter(p=>p.status!=='Sold').length;
+    const ctx = document.getElementById('propertyChart').getContext('2d');
+    if(chartInstance) chartInstance.destroy();
+    chartInstance = new Chart(ctx, { type: 'doughnut', data: { labels: ['Sold Properties', 'Available Properties'], datasets: [{ data: [sold, avail], backgroundColor: ['#e25c5c', '#b8860b'], borderRadius: 8 }] }, options: { responsive: true, plugins: { legend: { position: 'bottom' } } } });
+  }
+  function updateStats(){
+    document.getElementById('statProps').innerText=properties.length;
+    document.getElementById('statReqs').innerText=requirements.length;
+    document.getElementById('statVisits').innerText=visits.length;
+    document.getElementById('statSold').innerText=properties.filter(p=>p.status==='Sold').length;
+  }
+
+  function exportToExcel(){
+    const propData = properties.map(p=>({Type:'Property', Title:p.title, Location:p.location, Price:p.price, Area:p.area, Status:p.status}));
+    const reqData = requirements.map(r=>({Type:'Requirement', Customer:r.customerName, Budget:r.budget, PropertyType:r.propertyType, LocationPref:r.locationPref}));
+    const visitData = visits.map(v=>({Type:'Visit', Customer:v.customer, PropertyRef:v.propertyRef, Date:v.date, Time:v.time, Status:v.status}));
+    const all = [...propData, ...reqData, ...visitData];
+    const ws = XLSX.utils.json_to_sheet(all);
+    const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, 'EmpireBuildcon_Data');
+    XLSX.writeFile(wb, `EmpireBuildcon_Raipur_${currentUser}.xlsx`);
+  }
+
+  // Login Logic
+  const usersDB = { admin: 'admin123', agent: 'agent123' };
+  document.getElementById('doLoginBtn').onclick = ()=>{
+    const user = document.getElementById('loginUsername').value.trim();
+    const pwd = document.getElementById('loginPassword').value;
+    if(usersDB[user] && usersDB[user]===pwd){
+      currentUser = user;
+      document.getElementById('currentUserDisplay').innerText = currentUser;
+      document.getElementById('loginOverlay').style.display = 'none';
+      document.getElementById('appMain').style.display = 'block';
+      loadUserData();
+    } else { alert('Invalid credentials! Use admin/admin123'); }
+  };
+  document.getElementById('logoutBtn').onclick = ()=>{ currentUser=null; document.getElementById('appMain').style.display='none'; document.getElementById('loginOverlay').style.display='flex'; };
+
+  // Event Listeners
+  document.getElementById('globalSearchInput').addEventListener('input', (e)=>setSearch(e.target.value));
+  document.getElementById('exportExcelBtn').onclick = exportToExcel;
+  document.getElementById('refreshChartBtn').onclick = ()=>{ updateChart(); };
+  
+  document.getElementById('openPropModalBtn').onclick = ()=>document.getElementById('addPropModal').style.display='flex';
+  document.getElementById('closeAddPropBtn').onclick = ()=>document.getElementById('addPropModal').style.display='none';
+  document.getElementById('confirmAddPropBtn').onclick = ()=>{ addProperty(document.getElementById('addTitle').value, document.getElementById('addLocation').value, document.getElementById('addPrice').value, document.getElementById('addArea').value, document.getElementById('addStatus').value); document.getElementById('addPropModal').style.display='none'; document.getElementById('addTitle').value=''; };
+  document.getElementById('openReqModalBtn').onclick = ()=>document.getElementById('addReqModal').style.display='flex';
+  document.getElementById('closeAddReqBtn').onclick = ()=>document.getElementById('addReqModal').style.display='none';
+  document.getElementById('confirmAddReqBtn').onclick = ()=>{ addRequirement(document.getElementById('addReqName').value, document.getElementById('addReqBudget').value, document.getElementById('addReqType').value, document.getElementById('addReqLoc').value); document.getElementById('addReqModal').style.display='none'; };
+  document.getElementById('openVisitModalBtn').onclick = ()=>document.getElementById('addVisitModal').style.display='flex';
+  document.getElementById('closeAddVisitBtn').onclick = ()=>document.getElementById('addVisitModal').style.display='none';
+  document.getElementById('confirmAddVisitBtn').onclick = ()=>{ addVisit(document.getElementById('addVisitCust').value, document.getElementById('addVisitPropRef').value, document.getElementById('addVisitDate').value, document.getElementById('addVisitTime').value, document.getElementById('addVisitStatus').value); document.getElementById('addVisitModal').style.display='none'; };
+  
+  document.getElementById('saveEditPropBtn').onclick = ()=>{ updateProperty(document.getElementById('editPropId').value, {title:document.getElementById('editTitle').value, location:document.getElementById('editLocation').value, price:document.getElementById('editPrice').value, area:document.getElementById('editArea').value, status:document.getElementById('editStatusSold').value}); document.getElementById('editPropModal').style.display='none'; };
+  document.getElementById('closeEditPropBtn').onclick = ()=>document.getElementById('editPropModal').style.display='none';
+  document.getElementById('saveEditReqBtn').onclick = ()=>{ updateRequirement(document.getElementById('editReqId').value, {customerName:document.getElementById('editCustName').value, budget:document.getElementById('editBudget').value, propertyType:document.getElementById('editPropType').value, locationPref:document.getElementById('editLocPref').value}); document.getElementById('editReqModal').style.display='none'; };
+  document.getElementById('closeEditReqBtn').onclick = ()=>document.getElementById('editReqModal').style.display='none';
+  document.getElementById('saveEditVisitBtn').onclick = ()=>{ updateVisit(document.getElementById('editVisitId').value, {customer:document.getElementById('editVisitCust').value, propertyRef:document.getElementById('editVisitRef').value, date:document.getElementById('editVisitDate').value, time:document.getElementById('editVisitTime').value, status:document.getElementById('editVisitStatus').value}); document.getElementById('editVisitModal').style.display='none'; };
+  document.getElementById('closeEditVisitBtn').onclick = ()=>document.getElementById('editVisitModal').style.display='none';
+  
+  window.onclick = (e)=>{ if(e.target.classList.contains('modal')) e.target.style.display='none'; };
+</script>
+</body>
+</html>
