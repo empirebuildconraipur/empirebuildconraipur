@@ -786,17 +786,169 @@ footer{background:#050505;padding:50px 5% 28px;border-top:1px solid rgba(200,151
     <!-- Property Listings -->
     <div class="card">
       <div class="card-header"><span><i class="fas fa-building"></i> Property Listings</span><button class="btn-icon" id="openPropModalBtn" style="background:#b8860b;color:white;">+ Add</button></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;padding:10px 0;border-bottom:1px solid #e0e0e0;margin-bottom:8px">
+        <select id="propStatusFilter" onchange="applyFilters()" style="flex:1;min-width:120px;padding:7px 10px;border:1px solid #cfdfe8;border-radius:20px;font-size:13px;outline:none;color:#333">
+          <option value="">🏷️ All Status</option>
+          <option value="Available">✅ Available</option>
+          <option value="Sold">🏷️ Sold</option>
+        </select>
+        <select id="propLocationFilter" onchange="applyFilters()" style="flex:1;min-width:120px;padding:7px 10px;border:1px solid #cfdfe8;border-radius:20px;font-size:13px;outline:none;color:#333">
+          <option value="">📍 All Areas</option>
+          <option value="Mowa">Mowa</option>
+          <option value="Pandri">Pandri</option>
+          <option value="Avanti Vihar">Avanti Vihar</option>
+          <option value="Vidhansabha">Vidhansabha Road</option>
+          <option value="Saddu">Saddu</option>
+        </select>
+        <select id="propFacingFilter" onchange="applyFilters()" style="flex:1;min-width:120px;padding:7px 10px;border:1px solid #cfdfe8;border-radius:20px;font-size:13px;outline:none;color:#333">
+          <option value="">🧭 All Facing</option>
+          <option value="East Facing">🌅 East</option>
+          <option value="West Facing">🌇 West</option>
+          <option value="North Facing">⬆️ North</option>
+          <option value="South Facing">⬇️ South</option>
+          <option value="North-East Facing">↗️ North-East</option>
+          <option value="North-West Facing">↖️ North-West</option>
+          <option value="South-East Facing">↘️ South-East</option>
+          <option value="South-West Facing">↙️ South-West</option>
+        </select>
+        <button onclick="clearPropFilters()" style="padding:7px 14px;border:1px solid #e25c5c;border-radius:20px;background:white;color:#e25c5c;font-size:12px;cursor:pointer">🔄 Clear</button>
+      </div>
+      <div id="propFilterCount" style="font-size:12px;color:#6c8a9a;margin-bottom:6px"></div>
       <div class="list-container" id="propertyList"></div>
     </div>
     <!-- Customer Requirements -->
     <div class="card">
       <div class="card-header"><span><i class="fas fa-users"></i> Customer Requirements</span><button class="btn-icon" id="openReqModalBtn" style="background:#b8860b;color:white;">+ Add</button></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;padding:10px 0;border-bottom:1px solid #e0e0e0;margin-bottom:8px">
+        <select id="reqTypeFilter" onchange="applyFilters()" style="flex:1;min-width:120px;padding:7px 10px;border:1px solid #cfdfe8;border-radius:20px;font-size:13px;outline:none;color:#333">
+          <option value="">🏠 All Types</option>
+          <option value="Plot">Plot</option>
+          <option value="Flat">Flat</option>
+          <option value="House">House</option>
+          <option value="Commercial">Commercial</option>
+          <option value="Shop">Shop</option>
+        </select>
+        <select id="reqAreaFilter" onchange="applyFilters()" style="flex:1;min-width:120px;padding:7px 10px;border:1px solid #cfdfe8;border-radius:20px;font-size:13px;outline:none;color:#333">
+          <option value="">📍 All Areas</option>
+          <option value="Mowa">Mowa</option>
+          <option value="Pandri">Pandri</option>
+          <option value="Avanti Vihar">Avanti Vihar</option>
+          <option value="Vidhansabha">Vidhansabha Road</option>
+          <option value="Saddu">Saddu</option>
+        </select>
+        <button onclick="clearReqFilters()" style="padding:7px 14px;border:1px solid #e25c5c;border-radius:20px;background:white;color:#e25c5c;font-size:12px;cursor:pointer">🔄 Clear</button>
+      </div>
+      <div id="reqFilterCount" style="font-size:12px;color:#6c8a9a;margin-bottom:6px"></div>
       <div class="list-container" id="requirementList"></div>
     </div>
     <!-- Visits -->
     <div class="card">
       <div class="card-header"><span><i class="fas fa-calendar-check"></i> Visit Details</span><button class="btn-icon" id="openVisitModalBtn" style="background:#b8860b;color:white;">+ Schedule</button></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;padding:10px 0;border-bottom:1px solid #e0e0e0;margin-bottom:8px">
+        <select id="visitStatusFilter" onchange="applyFilters()" style="flex:1;min-width:120px;padding:7px 10px;border:1px solid #cfdfe8;border-radius:20px;font-size:13px;outline:none;color:#333">
+          <option value="">📅 All Status</option>
+          <option value="Scheduled">🟡 Scheduled</option>
+          <option value="Completed">🟢 Completed</option>
+          <option value="Cancelled">🔴 Cancelled</option>
+        </select>
+        <input id="visitDateFilter" type="date" onchange="applyFilters()" style="flex:1;min-width:130px;padding:7px 10px;border:1px solid #cfdfe8;border-radius:20px;font-size:13px;outline:none;color:#333">
+        <button onclick="clearVisitFilters()" style="padding:7px 14px;border:1px solid #e25c5c;border-radius:20px;background:white;color:#e25c5c;font-size:12px;cursor:pointer">🔄 Clear</button>
+      </div>
+      <div id="visitFilterCount" style="font-size:12px;color:#6c8a9a;margin-bottom:6px"></div>
       <div class="list-container" id="visitList"></div>
+    </div>
+  </div>
+
+
+  <!-- REMINDER SECTION -->
+  <div class="card" style="margin-top:20px;border-left:4px solid #b8860b">
+    <div class="card-header">
+      <span><i class="fas fa-bell"></i> Reminders & Follow-ups <span id="reminderBadge" style="background:#e25c5c;color:white;font-size:11px;padding:2px 7px;border-radius:10px;margin-left:6px;display:none">0</span></span>
+      <button onclick="openAddReminderModal()" style="background:#b8860b;color:white;border:none;padding:8px 16px;border-radius:20px;cursor:pointer;font-size:13px">+ Add Reminder</button>
+    </div>
+
+    <!-- Reminder Filters -->
+    <div style="display:flex;gap:8px;flex-wrap:wrap;padding:10px 0;border-bottom:1px solid #e0e0e0;margin-bottom:8px">
+      <select id="reminderTypeFilter" onchange="renderReminders()" style="flex:1;min-width:120px;padding:7px 10px;border:1px solid #cfdfe8;border-radius:20px;font-size:13px;outline:none">
+        <option value="">📋 All Types</option>
+        <option value="Call">📞 Call</option>
+        <option value="Site Visit">🏠 Site Visit</option>
+        <option value="Payment">💰 Payment</option>
+        <option value="Document">📄 Document</option>
+        <option value="Follow-up">🔁 Follow-up</option>
+        <option value="Meeting">🤝 Meeting</option>
+      </select>
+      <select id="reminderStatusFilter" onchange="renderReminders()" style="flex:1;min-width:120px;padding:7px 10px;border:1px solid #cfdfe8;border-radius:20px;font-size:13px;outline:none">
+        <option value="">🔔 All Status</option>
+        <option value="Pending">🟡 Pending</option>
+        <option value="Done">🟢 Done</option>
+        <option value="Overdue">🔴 Overdue</option>
+      </select>
+      <input type="date" id="reminderDateFilter" onchange="renderReminders()" style="flex:1;min-width:130px;padding:7px 10px;border:1px solid #cfdfe8;border-radius:20px;font-size:13px;outline:none">
+      <button onclick="clearReminderFilters()" style="padding:7px 14px;border:1px solid #e25c5c;border-radius:20px;background:white;color:#e25c5c;font-size:12px;cursor:pointer">🔄 Clear</button>
+    </div>
+
+    <div id="reminderCount" style="font-size:12px;color:#6c8a9a;margin-bottom:6px"></div>
+    <div class="list-container" id="reminderList"></div>
+  </div>
+
+  <!-- ADD REMINDER MODAL -->
+  <div id="addReminderModal" class="modal">
+    <div class="modal-content">
+      <h3>🔔 Add New Reminder</h3>
+      <input id="remCustomer" placeholder="👤 Customer Name*">
+      <input id="remProperty" placeholder="🏢 Property / Reference">
+      <select id="remType">
+        <option value="Call">📞 Call</option>
+        <option value="Site Visit">🏠 Site Visit</option>
+        <option value="Payment">💰 Payment</option>
+        <option value="Document">📄 Document</option>
+        <option value="Follow-up">🔁 Follow-up</option>
+        <option value="Meeting">🤝 Meeting</option>
+      </select>
+      <input id="remDate" type="date" placeholder="📅 Date*">
+      <input id="remTime" type="time" placeholder="⏰ Time">
+      <textarea id="remNote" placeholder="📝 Note / Message" style="width:100%;padding:10px;border:1px solid #cfdfe8;border-radius:10px;font-size:14px;resize:vertical;min-height:80px;outline:none;font-family:inherit"></textarea>
+      <select id="remPriority">
+        <option value="Normal">🟡 Normal Priority</option>
+        <option value="High">🔴 High Priority</option>
+        <option value="Low">🟢 Low Priority</option>
+      </select>
+      <button onclick="saveReminder()" style="background:#b8860b;color:white;width:100%;padding:12px;border:none;border-radius:20px;font-size:14px;font-weight:700;cursor:pointer;margin-top:8px">🔔 Save Reminder</button>
+      <button onclick="document.getElementById('addReminderModal').style.display='none'" style="width:100%;padding:10px;border:1px solid #ccc;border-radius:20px;background:white;color:#666;cursor:pointer;margin-top:8px;font-size:14px">Cancel</button>
+    </div>
+  </div>
+
+  <!-- EDIT REMINDER MODAL -->
+  <div id="editReminderModal" class="modal">
+    <div class="modal-content">
+      <h3>✏️ Edit Reminder</h3>
+      <input type="hidden" id="editRemId">
+      <input id="editRemCustomer" placeholder="👤 Customer Name*">
+      <input id="editRemProperty" placeholder="🏢 Property / Reference">
+      <select id="editRemType">
+        <option value="Call">📞 Call</option>
+        <option value="Site Visit">🏠 Site Visit</option>
+        <option value="Payment">💰 Payment</option>
+        <option value="Document">📄 Document</option>
+        <option value="Follow-up">🔁 Follow-up</option>
+        <option value="Meeting">🤝 Meeting</option>
+      </select>
+      <input id="editRemDate" type="date">
+      <input id="editRemTime" type="time">
+      <textarea id="editRemNote" style="width:100%;padding:10px;border:1px solid #cfdfe8;border-radius:10px;font-size:14px;resize:vertical;min-height:80px;outline:none;font-family:inherit"></textarea>
+      <select id="editRemPriority">
+        <option value="Normal">🟡 Normal Priority</option>
+        <option value="High">🔴 High Priority</option>
+        <option value="Low">🟢 Low Priority</option>
+      </select>
+      <select id="editRemStatus">
+        <option value="Pending">🟡 Pending</option>
+        <option value="Done">🟢 Done</option>
+        <option value="Overdue">🔴 Overdue</option>
+      </select>
+      <button onclick="updateReminder()" style="background:#b8860b;color:white;width:100%;padding:12px;border:none;border-radius:20px;font-size:14px;font-weight:700;cursor:pointer;margin-top:8px">💾 Save Changes</button>
+      <button onclick="document.getElementById('editReminderModal').style.display='none'" style="width:100%;padding:10px;border:1px solid #ccc;border-radius:20px;background:white;color:#666;cursor:pointer;margin-top:8px;font-size:14px">Cancel</button>
     </div>
   </div>
 
@@ -947,14 +1099,258 @@ function verifyCRM() {
   window.updateVisit=(id,data)=>{ let vi=visits.findIndex(v=>v.id==id); if(vi!==-1){ visits[vi]={...visits[vi],...data}; saveAllData(); renderAll();}};
   window.deleteVisit=(id)=>{ visits=visits.filter(v=>v.id!=id); saveAllData(); renderAll();};
 
-  function renderAll(){
+  
+// ============ FILTER FUNCTIONS ============
+function applyFilters() {
+  // Property Filters
+  const propStatus = document.getElementById('propStatusFilter')?.value || '';
+  const propLocation = document.getElementById('propLocationFilter')?.value || '';
+  const propFacing = document.getElementById('propFacingFilter')?.value || '';
+  
+  let filteredProps = properties.filter(p => {
+    const statusMatch = !propStatus || (p.status || 'Available') === propStatus;
+    const locationMatch = !propLocation || (p.location || '').toLowerCase().includes(propLocation.toLowerCase());
+    const facingMatch = !propFacing || (p.facing || '') === propFacing;
+    return statusMatch && locationMatch && facingMatch;
+  });
+  // Also apply global search
+  filteredProps = filterBySearch(filteredProps, ['title','location','price']);
+  renderProperties(filteredProps);
+  const pc = document.getElementById('propFilterCount');
+  if(pc) pc.innerText = filteredProps.length + ' properties found';
+
+  // Requirement Filters
+  const reqType = document.getElementById('reqTypeFilter')?.value || '';
+  const reqArea = document.getElementById('reqAreaFilter')?.value || '';
+  
+  let filteredReqs = requirements.filter(r => {
+    const typeMatch = !reqType || (r.propertyType || '').toLowerCase().includes(reqType.toLowerCase());
+    const areaMatch = !reqArea || (r.locationPref || '').toLowerCase().includes(reqArea.toLowerCase());
+    return typeMatch && areaMatch;
+  });
+  filteredReqs = filterBySearch(filteredReqs, ['customerName','locationPref','propertyType']);
+  renderRequirements(filteredReqs);
+  const rc = document.getElementById('reqFilterCount');
+  if(rc) rc.innerText = filteredReqs.length + ' requirements found';
+
+  // Visit Filters
+  const visitStatus = document.getElementById('visitStatusFilter')?.value || '';
+  const visitDate = document.getElementById('visitDateFilter')?.value || '';
+  
+  let filteredVisits = visits.filter(v => {
+    const statusMatch = !visitStatus || (v.status || '') === visitStatus;
+    const dateMatch = !visitDate || (v.date || '') === visitDate;
+    return statusMatch && dateMatch;
+  });
+  filteredVisits = filterBySearch(filteredVisits, ['customer','propertyRef']);
+  renderVisits(filteredVisits);
+  const vc = document.getElementById('visitFilterCount');
+  if(vc) vc.innerText = filteredVisits.length + ' visits found';
+}
+
+function clearPropFilters() {
+  document.getElementById('propStatusFilter').value = '';
+  document.getElementById('propLocationFilter').value = '';
+  document.getElementById('propFacingFilter').value = '';
+  applyFilters();
+}
+function clearReqFilters() {
+  document.getElementById('reqTypeFilter').value = '';
+  document.getElementById('reqAreaFilter').value = '';
+  applyFilters();
+}
+function clearVisitFilters() {
+  document.getElementById('visitStatusFilter').value = '';
+  document.getElementById('visitDateFilter').value = '';
+  applyFilters();
+}
+
+
+// ============ REMINDER SYSTEM ============
+let reminders = JSON.parse(localStorage.getItem('reminders_'+currentUser)||'[]');
+
+function saveReminders(){ localStorage.setItem('reminders_'+(currentUser||'admin'), JSON.stringify(reminders)); }
+
+function generateRemId(){ return 'rem_' + Date.now() + '_' + Math.random().toString(36).substr(2,5); }
+
+function openAddReminderModal(){
+  document.getElementById('addReminderModal').style.display='flex';
+  // Set default date to today
+  document.getElementById('remDate').value = new Date().toISOString().split('T')[0];
+  document.getElementById('remCustomer').focus();
+}
+
+function saveReminder(){
+  const cust = document.getElementById('remCustomer').value.trim();
+  if(!cust){ alert('Customer name required!'); return; }
+  const rem = {
+    id: generateRemId(),
+    customer: cust,
+    property: document.getElementById('remProperty').value,
+    type: document.getElementById('remType').value,
+    date: document.getElementById('remDate').value,
+    time: document.getElementById('remTime').value,
+    note: document.getElementById('remNote').value,
+    priority: document.getElementById('remPriority').value,
+    status: 'Pending',
+    createdAt: new Date().toISOString()
+  };
+  reminders.push(rem);
+  saveReminders();
+  renderReminders();
+  document.getElementById('addReminderModal').style.display='none';
+  // Clear form
+  ['remCustomer','remProperty','remNote','remTime'].forEach(id => document.getElementById(id).value='');
+  document.getElementById('remDate').value = new Date().toISOString().split('T')[0];
+  checkOverdueReminders();
+}
+
+function renderReminders(){
+  const typeF = document.getElementById('reminderTypeFilter')?.value||'';
+  const statusF = document.getElementById('reminderStatusFilter')?.value||'';
+  const dateF = document.getElementById('reminderDateFilter')?.value||'';
+  const today = new Date().toISOString().split('T')[0];
+
+  // Auto-mark overdue
+  reminders.forEach(r => {
+    if(r.status === 'Pending' && r.date && r.date < today) r.status = 'Overdue';
+  });
+  saveReminders();
+
+  let filtered = reminders.filter(r => {
+    return (!typeF || r.type===typeF) && (!statusF || r.status===statusF) && (!dateF || r.date===dateF);
+  });
+
+  // Sort: Overdue first, then Pending, then Done; by date
+  filtered.sort((a,b) => {
+    const order = {Overdue:0, Pending:1, Done:2};
+    if(order[a.status] !== order[b.status]) return order[a.status]-order[b.status];
+    return (a.date||'').localeCompare(b.date||'');
+  });
+
+  const container = document.getElementById('reminderList');
+  const countEl = document.getElementById('reminderCount');
+  if(!filtered.length){
+    container.innerHTML='<div style="padding:20px;text-align:center;color:#aaa">🔔 No reminders found</div>';
+    if(countEl) countEl.innerText='';
+    return;
+  }
+  if(countEl) countEl.innerText = filtered.length + ' reminders found';
+
+  const priorityColor = {High:'#e25c5c', Normal:'#b8860b', Low:'#2d9e5c'};
+  const statusColor = {Pending:'#f0a500', Done:'#2d9e5c', Overdue:'#e25c5c'};
+  const statusBg = {Pending:'#fff8e1', Done:'#e8f5e9', Overdue:'#fff0f0'};
+
+  container.innerHTML = filtered.map(r => `
+    <div style="background:${statusBg[r.status]||'#fff'};border:1px solid ${statusColor[r.status]||'#ddd'};border-left:4px solid ${statusColor[r.status]||'#b8860b'};border-radius:10px;padding:12px 14px;margin-bottom:8px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:6px">
+        <div>
+          <strong style="font-size:14px">👤 ${escapeHtml(r.customer)}</strong>
+          <span style="background:${priorityColor[r.priority]||'#b8860b'};color:white;font-size:10px;padding:2px 8px;border-radius:10px;margin-left:8px">${r.priority||'Normal'}</span>
+          <span style="background:${statusColor[r.status]};color:white;font-size:10px;padding:2px 8px;border-radius:10px;margin-left:4px">${r.status}</span>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          ${r.status!=='Done' ? `<button onclick="markReminderDone('${r.id}')" style="background:#2d9e5c;color:white;border:none;padding:4px 10px;border-radius:10px;font-size:11px;cursor:pointer">✅ Done</button>` : ''}
+          <i class="fas fa-edit edit-icon" onclick="openEditReminder('${r.id}')" style="color:#b8860b;background:rgba(184,134,11,0.1);padding:6px 10px;border-radius:6px;cursor:pointer"></i>
+          <i class="fas fa-trash delete-icon" onclick="deleteReminder('${r.id}')" style="color:#e25c5c;background:rgba(226,92,92,0.1);padding:6px 10px;border-radius:6px;cursor:pointer"></i>
+        </div>
+      </div>
+      <div style="font-size:13px;color:#555;margin-top:6px">
+        📞 ${escapeHtml(r.type)} ${r.property ? '| 🏢 '+escapeHtml(r.property) : ''}
+      </div>
+      <div style="font-size:12px;color:#777;margin-top:4px">
+        📅 ${r.date||''} ${r.time ? '⏰ '+r.time : ''}
+      </div>
+      ${r.note ? `<div style="font-size:12px;color:#555;margin-top:6px;background:rgba(0,0,0,0.04);padding:6px 10px;border-radius:6px">📝 ${escapeHtml(r.note)}</div>` : ''}
+    </div>
+  `).join('');
+}
+
+function markReminderDone(id){
+  const r = reminders.find(x=>x.id===id);
+  if(r){ r.status='Done'; saveReminders(); renderReminders(); }
+}
+
+function deleteReminder(id){
+  if(confirm('Delete this reminder?')){
+    reminders = reminders.filter(x=>x.id!==id);
+    saveReminders(); renderReminders();
+  }
+}
+
+function openEditReminder(id){
+  const r = reminders.find(x=>x.id===id);
+  if(!r) return;
+  document.getElementById('editRemId').value=r.id;
+  document.getElementById('editRemCustomer').value=r.customer;
+  document.getElementById('editRemProperty').value=r.property||'';
+  document.getElementById('editRemType').value=r.type||'Call';
+  document.getElementById('editRemDate').value=r.date||'';
+  document.getElementById('editRemTime').value=r.time||'';
+  document.getElementById('editRemNote').value=r.note||'';
+  document.getElementById('editRemPriority').value=r.priority||'Normal';
+  document.getElementById('editRemStatus').value=r.status||'Pending';
+  document.getElementById('editReminderModal').style.display='flex';
+}
+
+function updateReminder(){
+  const id = document.getElementById('editRemId').value;
+  const idx = reminders.findIndex(x=>x.id===id);
+  if(idx===-1) return;
+  reminders[idx] = {
+    ...reminders[idx],
+    customer: document.getElementById('editRemCustomer').value,
+    property: document.getElementById('editRemProperty').value,
+    type: document.getElementById('editRemType').value,
+    date: document.getElementById('editRemDate').value,
+    time: document.getElementById('editRemTime').value,
+    note: document.getElementById('editRemNote').value,
+    priority: document.getElementById('editRemPriority').value,
+    status: document.getElementById('editRemStatus').value
+  };
+  saveReminders();
+  renderReminders();
+  document.getElementById('editReminderModal').style.display='none';
+}
+
+function clearReminderFilters(){
+  document.getElementById('reminderTypeFilter').value='';
+  document.getElementById('reminderStatusFilter').value='';
+  document.getElementById('reminderDateFilter').value='';
+  renderReminders();
+}
+
+function checkOverdueReminders(){
+  const today = new Date().toISOString().split('T')[0];
+  const overdue = reminders.filter(r=>r.status==='Pending' && r.date && r.date < today);
+  const pending = reminders.filter(r=>r.status==='Pending' && r.date === today);
+  if(overdue.length > 0){
+    console.log(overdue.length + ' overdue reminders!');
+  }
+  // Show badge on bell icon in stats
+  updateReminderBadge();
+}
+
+function updateReminderBadge(){
+  const today = new Date().toISOString().split('T')[0];
+  const urgent = reminders.filter(r=>r.status!=='Done' && (r.date===today || (r.date && r.date < today))).length;
+  const badge = document.getElementById('reminderBadge');
+  if(badge){
+    badge.innerText = urgent > 0 ? urgent : '';
+    badge.style.display = urgent > 0 ? 'inline-flex' : 'none';
+  }
+}
+
+// Load reminders on login
+function loadReminders(){
+  reminders = JSON.parse(localStorage.getItem('reminders_'+(currentUser||'admin'))||'[]');
+  renderReminders();
+  checkOverdueReminders();
+}
+
+function renderAll(){
     if(!currentUser) return;
-    let filteredProps = filterBySearch(properties, ['title','location','price']);
-    let filteredReqs = filterBySearch(requirements, ['customerName','locationPref','propertyType']);
-    let filteredVisits = filterBySearch(visits, ['customer','propertyRef']);
-    renderProperties(filteredProps);
-    renderRequirements(filteredReqs);
-    renderVisits(filteredVisits);
+    applyFilters();
     updateStats();
     updateChart();
   }
@@ -1073,6 +1469,7 @@ function verifyCRM() {
       document.getElementById('loginOverlay').style.display = 'none';
       document.getElementById('appMain').style.display = 'block';
       loadUserData();
+      setTimeout(loadReminders, 300);
     } else { alert('Invalid credentials! Use admin/admin123'); }
   };
   document.getElementById('logoutBtn').onclick = ()=>{ currentUser=null; document.getElementById('appMain').style.display='none'; document.getElementById('loginOverlay').style.display='flex'; };
