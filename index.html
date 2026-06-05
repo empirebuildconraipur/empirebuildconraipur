@@ -21,17 +21,13 @@ nav{position:sticky;top:0;z-index:999;background:#0a0a0a;padding:16px 5%;display
 .nav-links a:hover{color:#C8973A}
 .nav-call{background:#C8973A;color:#0a0a0a;padding:9px 20px;border-radius:4px;font-size:13px;font-weight:500;text-decoration:none;transition:background 0.3s}
 .nav-call:hover{background:#E8C06A}
-
-@media(max-width:768px){
-  .nav-links{display:none;position:fixed;top:70px;left:0;right:0;background:#0a0a0a;flex-direction:column;gap:0;padding:10px 0;z-index:998;border-top:1px solid rgba(200,151,58,0.2)}
-  .nav-links.open{display:flex}
-  .nav-links li a{display:block;padding:14px 24px;font-size:15px;border-bottom:1px solid rgba(255,255,255,0.05)}
+@media(max-width:900px){
+  #mainNav{display:none;position:fixed;top:70px;left:0;right:0;background:#0a0a0a;flex-direction:column;gap:0;z-index:998;border-top:1px solid rgba(200,151,58,0.2)}
+  #mainNav.open{display:flex!important}
+  #mainNav li a{display:block;padding:16px 24px;font-size:15px;border-bottom:1px solid rgba(255,255,255,0.06)}
+  #hamBtn{display:flex!important}
   .nav-call{font-size:12px;padding:8px 14px}
-  .hamburger{display:flex!important}
 }
-.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px;background:none;border:none}
-.hamburger span{width:24px;height:2px;background:#C8973A;border-radius:2px;display:block;transition:all 0.3s}
-
 
 /* HERO */
 .hero{min-height:100vh;background:linear-gradient(135deg,#0a0a0a 0%,#1a1208 60%,#0a0a0a 100%);display:flex;align-items:center;padding:80px 5% 60px;position:relative;overflow:hidden}
@@ -169,7 +165,7 @@ footer{background:#050505;padding:50px 5% 28px;border-top:1px solid rgba(200,151
 </style>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
-<style>#crm-wrapper { all: initial; font-family: Inter, sans-serif; }
+<style>
 
     * {
       margin: 0;
@@ -442,10 +438,15 @@ footer{background:#050505;padding:50px 5% 28px;border-top:1px solid rgba(200,151
     }
     .edit-icon, .delete-icon {
       cursor: pointer;
-      font-size: 0.8rem;
-      padding: 5px;
-      color: #6c8a9a;
+      font-size: 1rem;
+      padding: 6px 10px;
+      border-radius: 6px;
+      transition: all 0.2s;
     }
+    .edit-icon { color: #b8860b; background: rgba(184,134,11,0.1); }
+    .edit-icon:hover { background: rgba(184,134,11,0.25); }
+    .delete-icon { color: #e25c5c; background: rgba(226,92,92,0.1); }
+    .delete-icon:hover { background: rgba(226,92,92,0.25); }
     .edit-icon:hover { color: #f4b942; }
     .delete-icon:hover { color: #e25c5c; }
     .status-badge {
@@ -489,7 +490,9 @@ footer{background:#050505;padding:50px 5% 28px;border-top:1px solid rgba(200,151
     }
     footer { text-align: center; margin-top: 24px; font-size: 0.7rem; color: #5c7a8c; }
     @media (max-width: 700px) { .action-bar { flex-direction: column; align-items: stretch; } }
-  </style>
+  
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
 
@@ -505,17 +508,19 @@ footer{background:#050505;padding:50px 5% 28px;border-top:1px solid rgba(200,151
     <div class="logo-circle">E</div>
     <div class="logo-name">Empire Buildcon<span>RAIPUR</span></div>
   </a>
-  <ul class="nav-links">
+  <ul class="nav-links" id="mainNav">
     <li><a href="#about">About</a></li>
     <li><a href="#areas">Areas</a></li>
     <li><a href="#services">Services</a></li>
-    <li><a href="#reels">Videos</a></li>
     <li><a href="#contact">Contact</a></li>
-    <li><a href="javascript:void(0)" onclick="openCRMLock()" style="color:#C8973A;font-weight:700">📊 CRM</a></li>
+    <li><a href="#reels">Videos</a></li>
+    <li><a href="javascript:void(0)" onclick="openCRMLock()" style="color:#C8973A;font-weight:700;background:rgba(200,151,58,0.1);padding:6px 14px;border-radius:4px">📊 CRM</a></li>
   </ul>
   <a href="tel:7024886677" class="nav-call">📞 Call Now</a>
-  <button class="hamburger" onclick="toggleNav()" id="hamburgerBtn">
-    <span></span><span></span><span></span>
+  <button onclick="document.getElementById('mainNav').classList.toggle('open')" style="display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:6px" id="hamBtn">
+    <span style="width:24px;height:2px;background:#C8973A;display:block"></span>
+    <span style="width:24px;height:2px;background:#C8973A;display:block"></span>
+    <span style="width:24px;height:2px;background:#C8973A;display:block"></span>
   </button>
 </nav>
 
@@ -689,33 +694,32 @@ footer{background:#050505;padding:50px 5% 28px;border-top:1px solid rgba(200,151
 
 
 <!-- CRM PASSWORD MODAL -->
-<div id="crmLockOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);backdrop-filter:blur(10px);z-index:99999;align-items:center;justify-content:center">
-  <div style="background:#fff;border-radius:24px;padding:44px 36px;width:340px;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,0.5)">
+<div id="crmLockOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.9);backdrop-filter:blur(10px);z-index:99999;align-items:center;justify-content:center">
+  <div style="background:#fff;border-radius:24px;padding:44px 36px;width:340px;max-width:90vw;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,0.5)">
     <div style="font-size:52px;margin-bottom:16px">🔐</div>
     <h2 style="font-size:1.5rem;font-weight:800;color:#1a2c3e;margin-bottom:6px">CRM Login</h2>
     <p style="font-size:13px;color:#999;margin-bottom:28px">Enter password to access CRM</p>
-    <input id="crmPassInput" type="password" placeholder="••••••••" 
-      style="width:100%;padding:15px;border:2px solid #e8e0d0;border-radius:12px;font-size:16px;outline:none;margin-bottom:10px;text-align:center;letter-spacing:4px;transition:border-color 0.3s"
-      onfocus="this.style.borderColor='#b8860b'" onblur="this.style.borderColor='#e8e0d0'"
+    <input id="crmPassInput" type="password" placeholder="••••••••"
+      style="width:100%;padding:15px;border:2px solid #e8e0d0;border-radius:12px;font-size:16px;outline:none;margin-bottom:10px;text-align:center;letter-spacing:4px"
       onkeydown="if(event.key==='Enter') verifyCRM()">
     <div id="crmErrMsg" style="color:#e25c5c;font-size:13px;min-height:20px;margin-bottom:8px"></div>
-    <button onclick="verifyCRM()" 
-      style="width:100%;background:#b8860b;color:#fff;border:none;padding:15px;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;margin-bottom:12px;transition:background 0.3s"
-      onmouseover="this.style.background='#d4a017'" onmouseout="this.style.background='#b8860b'">
+    <button onclick="verifyCRM()"
+      style="width:100%;background:#b8860b;color:#fff;border:none;padding:15px;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;margin-bottom:12px">
       🔓 OPEN CRM
     </button>
-    <button onclick="closeCRMLock()" 
+    <button onclick="document.getElementById('crmLockOverlay').style.display='none'"
       style="width:100%;background:#f0f0f0;color:#666;border:none;padding:12px;border-radius:12px;font-size:14px;cursor:pointer">
       ✕ Cancel
     </button>
   </div>
 </div>
 
-<!-- CRM SECTION (hidden by default) -->
+<!-- CRM SECTION -->
 <div id="crm-wrapper" style="display:none">
-  <div style="background:#1a2c3e;padding:18px 5%;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100">
-    <div style="font-size:20px;font-weight:800;color:#c9a03d;letter-spacing:1px">📊 Empire Buildcon — CRM</div>
-    <button onclick="closeCRM()" style="background:#c9a03d;color:#0a0a0a;border:none;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer">← Back to Website</button>
+  <div style="background:#1a2c3e;padding:18px 5%;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;flex-wrap:wrap;gap:10px">
+    <div style="font-size:18px;font-weight:800;color:#c9a03d;letter-spacing:1px">📊 Empire Buildcon CRM</div>
+    <button onclick="document.getElementById('crm-wrapper').style.display='none';window.scrollTo({top:0,behavior:'smooth'})" 
+      style="background:#c9a03d;color:#0a0a0a;border:none;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer">← Back to Website</button>
   </div>
   <div style="padding:20px;background:#eef2f7;min-height:100vh">
     <!-- LOGIN SCREEN with Empire Buildcon Raipur LOGO (as per your brand) -->
@@ -805,12 +809,57 @@ footer{background:#050505;padding:50px 5% 28px;border-top:1px solid rgba(200,151
 </div>
 
 <!-- MODALS for Edit/Add -->
-<div id="editPropModal" class="modal"><div class="modal-content"><h3>✏️ Edit Property</h3><input id="editPropId" type="hidden"><input id="editTitle" placeholder="Title"><input id="editLocation" placeholder="Location (Raipur)"><input id="editPrice" placeholder="Price"><input id="editArea" placeholder="Area/BHK"><select id="editStatusSold"><option value="Available">Available</option><option value="Sold">Sold</option></select><div class="item-actions"><button id="saveEditPropBtn" style="background:#b8860b;color:white;padding:8px 20px;border-radius:30px;border:none;">Save</button><button id="closeEditPropBtn" style="padding:8px 20px;">Cancel</button></div></div></div>
+<div id="editPropModal" class="modal"><div class="modal-content">
+<h3>✏️ Edit Property</h3>
+<input type="hidden" id="editPropId">
+<input id="editTitle" placeholder="Property Title*">
+<input id="editLocation" placeholder="Location">
+<input id="editPrice" placeholder="Price (₹)">
+<input id="editArea" placeholder="BHK / Type">
+<input id="editPlotArea" placeholder="🏞️ Plot Area (e.g., 1200 sq ft / 40x60 ft)">
+<input id="editConstArea" placeholder="🏗️ Construction Area (e.g., 900 sq ft)">
+<select id="editFacing">
+<option value="">-- Property Facing --</option>
+<option value="East Facing">🌅 East Facing (Purv)</option>
+<option value="West Facing">🌇 West Facing (Paschim)</option>
+<option value="North Facing">⬆️ North Facing (Uttar)</option>
+<option value="South Facing">⬇️ South Facing (Dakhin)</option>
+<option value="North-East Facing">↗️ North-East / Ishan Kon</option>
+<option value="North-West Facing">↖️ North-West / Vayavya Kon</option>
+<option value="South-East Facing">↘️ South-East / Agni Kon</option>
+<option value="South-West Facing">↙️ South-West / Nairutya Kon</option>
+</select>
+<select id="editStatusSold"><option value="Available">✅ Available</option><option value="Sold">🏷️ Sold</option></select>
+<button id="saveEditPropBtn" style="background:#b8860b;color:white;">💾 Save Changes</button>
+<button id="closeEditPropBtn">Cancel</button>
+</div></div></div>
 <div id="editReqModal" class="modal"><div class="modal-content"><h3>✏️ Edit Requirement</h3><input id="editReqId" type="hidden"><input id="editCustName" placeholder="Customer"><input id="editBudget" placeholder="Budget"><input id="editPropType" placeholder="Property Type"><input id="editLocPref" placeholder="Location"><button id="saveEditReqBtn" style="background:#b8860b;color:white;padding:8px 20px;border-radius:30px;">Save</button><button id="closeEditReqBtn">Cancel</button></div></div>
 <div id="editVisitModal" class="modal"><div class="modal-content"><h3>✏️ Edit Visit</h3><input id="editVisitId" type="hidden"><input id="editVisitCust" placeholder="Customer"><input id="editVisitRef" placeholder="Property Ref"><input type="date" id="editVisitDate"><input type="time" id="editVisitTime"><select id="editVisitStatus"><option>Scheduled</option><option>Completed</option><option>Cancelled</option></select><button id="saveEditVisitBtn" style="background:#b8860b;color:white;">Save</button><button id="closeEditVisitBtn">Cancel</button></div></div>
 
 <!-- ADD MODALS -->
-<div id="addPropModal" class="modal"><div class="modal-content"><h3>🏠 Add New Property - Raipur</h3><input id="addTitle" placeholder="Title* (e.g., Empire Heights)"><input id="addLocation" placeholder="Location (e.g., VIP Road, Raipur)"><input id="addPrice" placeholder="Price (₹)"><input id="addArea" placeholder="BHK/Area"><select id="addStatus"><option value="Available">Available</option><option value="Sold">Sold</option></select><button id="confirmAddPropBtn" style="background:#b8860b;color:white;">Add Property</button><button id="closeAddPropBtn">Cancel</button></div></div>
+<div id="addPropModal" class="modal"><div class="modal-content">
+<h3>🏠 Add New Property - Raipur</h3>
+<input id="addTitle" placeholder="Property Title* (e.g., Empire Heights)">
+<input id="addLocation" placeholder="Location (e.g., Mowa, Raipur)">
+<input id="addPrice" placeholder="Price (₹) e.g. 45 Lakh">
+<input id="addArea" placeholder="BHK / Type (e.g., 3 BHK, Duplex)">
+<input id="addPlotArea" placeholder="🏞️ Plot Area (e.g., 1200 sq ft / 40x60 ft)">
+<input id="addConstArea" placeholder="🏗️ Construction Area (e.g., 900 sq ft)">
+<select id="addFacing">
+<option value="">-- Property Facing Chunein --</option>
+<option value="East Facing">🌅 East Facing (Purv)</option>
+<option value="West Facing">🌇 West Facing (Paschim)</option>
+<option value="North Facing">⬆️ North Facing (Uttar)</option>
+<option value="South Facing">⬇️ South Facing (Dakhin)</option>
+<option value="North-East Facing">↗️ North-East / Ishan Kon</option>
+<option value="North-West Facing">↖️ North-West / Vayavya Kon</option>
+<option value="South-East Facing">↘️ South-East / Agni Kon</option>
+<option value="South-West Facing">↙️ South-West / Nairutya Kon</option>
+</select>
+<select id="addStatus"><option value="Available">✅ Available</option><option value="Sold">🏷️ Sold</option></select>
+<button id="confirmAddPropBtn" style="background:#b8860b;color:white;">➕ Add Property</button>
+<button id="closeAddPropBtn">Cancel</button>
+</div></div>
 <div id="addReqModal" class="modal"><div class="modal-content"><h3>📋 Add Customer Requirement</h3><input id="addReqName" placeholder="Customer Name*"><input id="addReqBudget" placeholder="Budget Range"><input id="addReqType" placeholder="Property Type (Apartment/Villa)"><input id="addReqLoc" placeholder="Preferred Location (Raipur)"><button id="confirmAddReqBtn" style="background:#b8860b;color:white;">Add Requirement</button><button id="closeAddReqBtn">Cancel</button></div></div>
 <div id="addVisitModal" class="modal"><div class="modal-content"><h3>📅 Schedule Site Visit - Raipur</h3><input id="addVisitCust" placeholder="Customer Name*"><input id="addVisitPropRef" placeholder="Property Reference*"><input type="date" id="addVisitDate"><input type="time" id="addVisitTime"><select id="addVisitStatus"><option>Scheduled</option></select><button id="confirmAddVisitBtn" style="background:#b8860b;color:white;">Schedule Visit</button><button id="closeAddVisitBtn">Cancel</button></div></div>
   </div>
@@ -822,25 +871,20 @@ function openCRMLock() {
   document.getElementById('crmPassInput').value = '';
   document.getElementById('crmErrMsg').innerText = '';
   setTimeout(()=>document.getElementById('crmPassInput').focus(), 100);
-}
-function closeCRMLock() {
-  document.getElementById('crmLockOverlay').style.display = 'none';
+  // close mobile nav
+  document.getElementById('mainNav').classList.remove('open');
 }
 function verifyCRM() {
   const p = document.getElementById('crmPassInput').value;
   if(p === 'empire2024') {
     document.getElementById('crmLockOverlay').style.display = 'none';
     document.getElementById('crm-wrapper').style.display = 'block';
-    window.scrollTo({top: document.getElementById('crm-wrapper').offsetTop, behavior:'smooth'});
+    window.scrollTo({top:0,behavior:'smooth'});
   } else {
     document.getElementById('crmErrMsg').innerText = '❌ Wrong password!';
     document.getElementById('crmPassInput').value = '';
     document.getElementById('crmPassInput').focus();
   }
-}
-function closeCRM() {
-  document.getElementById('crm-wrapper').style.display = 'none';
-  window.scrollTo({top:0, behavior:'smooth'});
 }
 </script>
 
@@ -920,9 +964,16 @@ function closeCRM() {
     if(!propsArr.length){ container.innerHTML='<div style="padding:20px;text-align:center;">🏠 No properties in Raipur</div>'; return; }
     let html='';
     propsArr.forEach(p=>{
-      html+=`<div class="property-item"><div><strong>🏢 ${escapeHtml(p.title)}</strong> <span class="status-badge">${p.status||'Available'}</span></div>
-      <div>📍 ${escapeHtml(p.location)} | 💰 ${escapeHtml(p.price)} | ${escapeHtml(p.area)}</div>
-      <div class="item-actions"><i class="fas fa-edit edit-icon" data-id="${p.id}" data-type="prop"></i><i class="fas fa-trash delete-icon" data-id="${p.id}" data-type="prop"></i></div></div>`;
+      html+=`<div class="property-item">
+  <div><strong>🏢 ${escapeHtml(p.title)}</strong> <span class="status-badge">${p.status||'Available'}</span></div>
+  <div>📍 ${escapeHtml(p.location)} | 💰 ${escapeHtml(p.price)} | 🏠 ${escapeHtml(p.area)}</div>
+  <div style="font-size:0.8rem;color:#6c8a9a;margin-top:4px">
+    ${p.plotArea ? '🏞️ Plot: '+escapeHtml(p.plotArea)+' | ' : ''}
+    ${p.constArea ? '🏗️ Built: '+escapeHtml(p.constArea)+' | ' : ''}
+    ${p.facing ? '🧭 '+escapeHtml(p.facing) : ''}
+  </div>
+  <div class="item-actions"><i class="fas fa-edit edit-icon" data-id="${p.id}" data-type="prop"></i><i class="fas fa-trash delete-icon" data-id="${p.id}" data-type="prop"></i></div>
+</div>`;
     });
     container.innerHTML=html;
     attachEditDeleteEvents('prop');
@@ -963,7 +1014,18 @@ function closeCRM() {
   function openEditModal(type, id){
     if(type==='prop'){
       let p=properties.find(x=>x.id==id);
-      if(p){ document.getElementById('editPropId').value=p.id; document.getElementById('editTitle').value=p.title; document.getElementById('editLocation').value=p.location; document.getElementById('editPrice').value=p.price; document.getElementById('editArea').value=p.area; document.getElementById('editStatusSold').value=p.status||'Available'; document.getElementById('editPropModal').style.display='flex'; }
+      if(p){ 
+  document.getElementById('editPropId').value=p.id; 
+  document.getElementById('editTitle').value=p.title; 
+  document.getElementById('editLocation').value=p.location; 
+  document.getElementById('editPrice').value=p.price; 
+  document.getElementById('editArea').value=p.area; 
+  document.getElementById('editStatusSold').value=p.status||'Available';
+  document.getElementById('editPlotArea').value=p.plotArea||'';
+  document.getElementById('editConstArea').value=p.constArea||'';
+  document.getElementById('editFacing').value=p.facing||'';
+  document.getElementById('editPropModal').style.display='flex'; 
+}
     } else if(type==='req'){
       let r=requirements.find(x=>x.id==id);
       if(r){ document.getElementById('editReqId').value=r.id; document.getElementById('editCustName').value=r.customerName; document.getElementById('editBudget').value=r.budget; document.getElementById('editPropType').value=r.propertyType; document.getElementById('editLocPref').value=r.locationPref; document.getElementById('editReqModal').style.display='flex'; }
@@ -1022,7 +1084,23 @@ function closeCRM() {
   
   document.getElementById('openPropModalBtn').onclick = ()=>document.getElementById('addPropModal').style.display='flex';
   document.getElementById('closeAddPropBtn').onclick = ()=>document.getElementById('addPropModal').style.display='none';
-  document.getElementById('confirmAddPropBtn').onclick = ()=>{ addProperty(document.getElementById('addTitle').value, document.getElementById('addLocation').value, document.getElementById('addPrice').value, document.getElementById('addArea').value, document.getElementById('addStatus').value); document.getElementById('addPropModal').style.display='none'; document.getElementById('addTitle').value=''; };
+  document.getElementById('confirmAddPropBtn').onclick = ()=>{ 
+  addProperty(
+    document.getElementById('addTitle').value, 
+    document.getElementById('addLocation').value, 
+    document.getElementById('addPrice').value, 
+    document.getElementById('addArea').value, 
+    document.getElementById('addStatus').value,
+    document.getElementById('addPlotArea').value,
+    document.getElementById('addConstArea').value,
+    document.getElementById('addFacing').value
+  ); 
+  document.getElementById('addPropModal').style.display='none'; 
+  document.getElementById('addTitle').value='';
+  document.getElementById('addPlotArea').value='';
+  document.getElementById('addConstArea').value='';
+  document.getElementById('addFacing').value='';
+};
   document.getElementById('openReqModalBtn').onclick = ()=>document.getElementById('addReqModal').style.display='flex';
   document.getElementById('closeAddReqBtn').onclick = ()=>document.getElementById('addReqModal').style.display='none';
   document.getElementById('confirmAddReqBtn').onclick = ()=>{ addRequirement(document.getElementById('addReqName').value, document.getElementById('addReqBudget').value, document.getElementById('addReqType').value, document.getElementById('addReqLoc').value); document.getElementById('addReqModal').style.display='none'; };
@@ -1030,7 +1108,19 @@ function closeCRM() {
   document.getElementById('closeAddVisitBtn').onclick = ()=>document.getElementById('addVisitModal').style.display='none';
   document.getElementById('confirmAddVisitBtn').onclick = ()=>{ addVisit(document.getElementById('addVisitCust').value, document.getElementById('addVisitPropRef').value, document.getElementById('addVisitDate').value, document.getElementById('addVisitTime').value, document.getElementById('addVisitStatus').value); document.getElementById('addVisitModal').style.display='none'; };
   
-  document.getElementById('saveEditPropBtn').onclick = ()=>{ updateProperty(document.getElementById('editPropId').value, {title:document.getElementById('editTitle').value, location:document.getElementById('editLocation').value, price:document.getElementById('editPrice').value, area:document.getElementById('editArea').value, status:document.getElementById('editStatusSold').value}); document.getElementById('editPropModal').style.display='none'; };
+  document.getElementById('saveEditPropBtn').onclick = ()=>{ 
+  updateProperty(document.getElementById('editPropId').value, {
+    title:document.getElementById('editTitle').value, 
+    location:document.getElementById('editLocation').value, 
+    price:document.getElementById('editPrice').value, 
+    area:document.getElementById('editArea').value, 
+    status:document.getElementById('editStatusSold').value,
+    plotArea:document.getElementById('editPlotArea').value,
+    constArea:document.getElementById('editConstArea').value,
+    facing:document.getElementById('editFacing').value
+  }); 
+  document.getElementById('editPropModal').style.display='none'; 
+};
   document.getElementById('closeEditPropBtn').onclick = ()=>document.getElementById('editPropModal').style.display='none';
   document.getElementById('saveEditReqBtn').onclick = ()=>{ updateRequirement(document.getElementById('editReqId').value, {customerName:document.getElementById('editCustName').value, budget:document.getElementById('editBudget').value, propertyType:document.getElementById('editPropType').value, locationPref:document.getElementById('editLocPref').value}); document.getElementById('editReqModal').style.display='none'; };
   document.getElementById('closeEditReqBtn').onclick = ()=>document.getElementById('editReqModal').style.display='none';
@@ -1039,18 +1129,6 @@ function closeCRM() {
   
   window.onclick = (e)=>{ if(e.target.classList.contains('modal')) e.target.style.display='none'; };
 
-</script>
-
-
-<script>
-function toggleNav(){
-  const nl = document.querySelector('.nav-links');
-  nl.classList.toggle('open');
-}
-// Close nav on link click
-document.querySelectorAll('.nav-links a').forEach(a=>{
-  a.addEventListener('click',()=>document.querySelector('.nav-links').classList.remove('open'));
-});
 </script>
 
 </body>
