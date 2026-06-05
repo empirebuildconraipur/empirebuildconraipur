@@ -952,6 +952,95 @@ footer{background:#050505;padding:50px 5% 28px;border-top:1px solid rgba(200,151
     </div>
   </div>
 
+
+  <!-- NOTES SECTION -->
+  <div class="card" style="margin-top:20px;border-left:4px solid #1e6f5c">
+    <div class="card-header">
+      <span><i class="fas fa-sticky-note"></i> Notes 
+        <span id="noteBadge" style="background:#1e6f5c;color:white;font-size:11px;padding:2px 7px;border-radius:10px;margin-left:6px">0</span>
+      </span>
+      <button onclick="openAddNoteModal()" style="background:#1e6f5c;color:white;border:none;padding:8px 16px;border-radius:20px;cursor:pointer;font-size:13px">+ Add Note</button>
+    </div>
+
+    <!-- Notes Filters -->
+    <div style="display:flex;gap:8px;flex-wrap:wrap;padding:10px 0;border-bottom:1px solid #e0e0e0;margin-bottom:8px">
+      <select id="noteCategoryFilter" onchange="renderNotes()" style="flex:1;min-width:120px;padding:7px 10px;border:1px solid #cfdfe8;border-radius:20px;font-size:13px;outline:none">
+        <option value="">📁 All Categories</option>
+        <option value="General">📝 General</option>
+        <option value="Customer">👤 Customer</option>
+        <option value="Property">🏢 Property</option>
+        <option value="Deal">🤝 Deal</option>
+        <option value="Important">⭐ Important</option>
+        <option value="Legal">⚖️ Legal</option>
+        <option value="Finance">💰 Finance</option>
+      </select>
+      <input id="noteSearchFilter" type="text" placeholder="🔍 Search notes..." oninput="renderNotes()" style="flex:2;min-width:150px;padding:7px 10px;border:1px solid #cfdfe8;border-radius:20px;font-size:13px;outline:none">
+      <button onclick="clearNoteFilters()" style="padding:7px 14px;border:1px solid #e25c5c;border-radius:20px;background:white;color:#e25c5c;font-size:12px;cursor:pointer">🔄 Clear</button>
+    </div>
+
+    <div id="noteCount" style="font-size:12px;color:#6c8a9a;margin-bottom:6px"></div>
+    <div id="noteList" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px"></div>
+  </div>
+
+  <!-- ADD NOTE MODAL -->
+  <div id="addNoteModal" class="modal">
+    <div class="modal-content">
+      <h3>📝 Add New Note</h3>
+      <input id="noteTitle" placeholder="Note Title*">
+      <select id="noteCategory">
+        <option value="General">📝 General</option>
+        <option value="Customer">👤 Customer</option>
+        <option value="Property">🏢 Property</option>
+        <option value="Deal">🤝 Deal</option>
+        <option value="Important">⭐ Important</option>
+        <option value="Legal">⚖️ Legal</option>
+        <option value="Finance">💰 Finance</option>
+      </select>
+      <input id="noteRef" placeholder="👤 Customer / 🏢 Property Reference (optional)">
+      <textarea id="noteContent" placeholder="Write your note here..." style="width:100%;padding:12px;border:1px solid #cfdfe8;border-radius:10px;font-size:14px;resize:vertical;min-height:120px;outline:none;font-family:inherit;margin:6px 0"></textarea>
+      <select id="noteColor">
+        <option value="#fff8e1">🟡 Yellow</option>
+        <option value="#e8f5e9">🟢 Green</option>
+        <option value="#e3f2fd">🔵 Blue</option>
+        <option value="#fce4ec">🔴 Pink</option>
+        <option value="#f3e5f5">🟣 Purple</option>
+        <option value="#fff">⬜ White</option>
+      </select>
+      <button onclick="saveNote()" style="background:#1e6f5c;color:white;width:100%;padding:12px;border:none;border-radius:20px;font-size:14px;font-weight:700;cursor:pointer;margin-top:8px">📝 Save Note</button>
+      <button onclick="document.getElementById('addNoteModal').style.display='none'" style="width:100%;padding:10px;border:1px solid #ccc;border-radius:20px;background:white;color:#666;cursor:pointer;margin-top:8px;font-size:14px">Cancel</button>
+    </div>
+  </div>
+
+  <!-- EDIT NOTE MODAL -->
+  <div id="editNoteModal" class="modal">
+    <div class="modal-content">
+      <h3>✏️ Edit Note</h3>
+      <input type="hidden" id="editNoteId">
+      <input id="editNoteTitle" placeholder="Note Title*">
+      <select id="editNoteCategory">
+        <option value="General">📝 General</option>
+        <option value="Customer">👤 Customer</option>
+        <option value="Property">🏢 Property</option>
+        <option value="Deal">🤝 Deal</option>
+        <option value="Important">⭐ Important</option>
+        <option value="Legal">⚖️ Legal</option>
+        <option value="Finance">💰 Finance</option>
+      </select>
+      <input id="editNoteRef" placeholder="👤 Customer / 🏢 Property Reference">
+      <textarea id="editNoteContent" style="width:100%;padding:12px;border:1px solid #cfdfe8;border-radius:10px;font-size:14px;resize:vertical;min-height:120px;outline:none;font-family:inherit;margin:6px 0"></textarea>
+      <select id="editNoteColor">
+        <option value="#fff8e1">🟡 Yellow</option>
+        <option value="#e8f5e9">🟢 Green</option>
+        <option value="#e3f2fd">🔵 Blue</option>
+        <option value="#fce4ec">🔴 Pink</option>
+        <option value="#f3e5f5">🟣 Purple</option>
+        <option value="#fff">⬜ White</option>
+      </select>
+      <button onclick="updateNote()" style="background:#1e6f5c;color:white;width:100%;padding:12px;border:none;border-radius:20px;font-size:14px;font-weight:700;cursor:pointer;margin-top:8px">💾 Save Changes</button>
+      <button onclick="document.getElementById('editNoteModal').style.display='none'" style="width:100%;padding:10px;border:1px solid #ccc;border-radius:20px;background:white;color:#666;cursor:pointer;margin-top:8px;font-size:14px">Cancel</button>
+    </div>
+  </div>
+
   <!-- Chart Section -->
   <div class="chart-section">
     <h4><i class="fas fa-chart-pie"></i> Empire Buildcon Raipur - Property Analytics (Sold vs Available)</h4>
@@ -1165,6 +1254,129 @@ function clearVisitFilters() {
   applyFilters();
 }
 
+
+
+// ============ NOTES SYSTEM ============
+let notes = [];
+
+function saveNotes(){ localStorage.setItem('notes_'+(currentUser||'admin'), JSON.stringify(notes)); }
+function loadNotes(){ notes = JSON.parse(localStorage.getItem('notes_'+(currentUser||'admin'))||'[]'); renderNotes(); }
+function generateNoteId(){ return 'note_' + Date.now() + '_' + Math.random().toString(36).substr(2,5); }
+
+function openAddNoteModal(){
+  document.getElementById('addNoteModal').style.display='flex';
+  document.getElementById('noteTitle').focus();
+}
+
+function saveNote(){
+  const title = document.getElementById('noteTitle').value.trim();
+  if(!title){ alert('Note title required!'); return; }
+  const note = {
+    id: generateNoteId(),
+    title,
+    category: document.getElementById('noteCategory').value,
+    ref: document.getElementById('noteRef').value,
+    content: document.getElementById('noteContent').value,
+    color: document.getElementById('noteColor').value,
+    createdAt: new Date().toLocaleString('en-IN')
+  };
+  notes.unshift(note);
+  saveNotes();
+  renderNotes();
+  document.getElementById('addNoteModal').style.display='none';
+  ['noteTitle','noteRef','noteContent'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('noteCategory').value='General';
+  document.getElementById('noteColor').value='#fff8e1';
+}
+
+function renderNotes(){
+  const catF = document.getElementById('noteCategoryFilter')?.value||'';
+  const searchF = (document.getElementById('noteSearchFilter')?.value||'').toLowerCase();
+
+  let filtered = notes.filter(n=>{
+    const catMatch = !catF || n.category===catF;
+    const searchMatch = !searchF || 
+      (n.title||'').toLowerCase().includes(searchF) || 
+      (n.content||'').toLowerCase().includes(searchF) ||
+      (n.ref||'').toLowerCase().includes(searchF);
+    return catMatch && searchMatch;
+  });
+
+  const container = document.getElementById('noteList');
+  const countEl = document.getElementById('noteCount');
+  const badge = document.getElementById('noteBadge');
+  if(badge) badge.innerText = notes.length;
+  if(countEl) countEl.innerText = filtered.length + ' notes found';
+
+  if(!filtered.length){
+    container.innerHTML='<div style="padding:20px;text-align:center;color:#aaa;grid-column:1/-1">📝 No notes found</div>';
+    return;
+  }
+
+  const catColors = {General:'#1e6f5c',Customer:'#1565c0',Property:'#b8860b',Deal:'#6a1b9a',Important:'#c62828',Legal:'#4e342e',Finance:'#2e7d32'};
+  const catIcons = {General:'📝',Customer:'👤',Property:'🏢',Deal:'🤝',Important:'⭐',Legal:'⚖️',Finance:'💰'};
+
+  container.innerHTML = filtered.map(n=>`
+    <div style="background:${n.color||'#fff8e1'};border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:16px;position:relative;box-shadow:0 2px 8px rgba(0,0,0,0.06);display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div>
+          <span style="background:${catColors[n.category]||'#1e6f5c'};color:white;font-size:10px;padding:2px 8px;border-radius:10px">${catIcons[n.category]||'📝'} ${n.category}</span>
+        </div>
+        <div style="display:flex;gap:6px">
+          <i class="fas fa-edit" onclick="openEditNote('${n.id}')" style="color:#b8860b;background:rgba(184,134,11,0.1);padding:5px 8px;border-radius:6px;cursor:pointer;font-size:12px"></i>
+          <i class="fas fa-trash" onclick="deleteNote('${n.id}')" style="color:#e25c5c;background:rgba(226,92,92,0.1);padding:5px 8px;border-radius:6px;cursor:pointer;font-size:12px"></i>
+        </div>
+      </div>
+      <div style="font-weight:700;font-size:15px;color:#1a1a1a">${escapeHtml(n.title)}</div>
+      ${n.ref ? `<div style="font-size:12px;color:#666">🔗 ${escapeHtml(n.ref)}</div>` : ''}
+      ${n.content ? `<div style="font-size:13px;color:#444;line-height:1.6;white-space:pre-wrap;word-break:break-word">${escapeHtml(n.content)}</div>` : ''}
+      <div style="font-size:11px;color:#aaa;margin-top:4px;border-top:1px solid rgba(0,0,0,0.06);padding-top:6px">🕐 ${n.createdAt}</div>
+    </div>
+  `).join('');
+}
+
+function openEditNote(id){
+  const n = notes.find(x=>x.id===id);
+  if(!n) return;
+  document.getElementById('editNoteId').value=n.id;
+  document.getElementById('editNoteTitle').value=n.title;
+  document.getElementById('editNoteCategory').value=n.category||'General';
+  document.getElementById('editNoteRef').value=n.ref||'';
+  document.getElementById('editNoteContent').value=n.content||'';
+  document.getElementById('editNoteColor').value=n.color||'#fff8e1';
+  document.getElementById('editNoteModal').style.display='flex';
+}
+
+function updateNote(){
+  const id = document.getElementById('editNoteId').value;
+  const idx = notes.findIndex(x=>x.id===id);
+  if(idx===-1) return;
+  notes[idx] = {
+    ...notes[idx],
+    title: document.getElementById('editNoteTitle').value,
+    category: document.getElementById('editNoteCategory').value,
+    ref: document.getElementById('editNoteRef').value,
+    content: document.getElementById('editNoteContent').value,
+    color: document.getElementById('editNoteColor').value,
+    updatedAt: new Date().toLocaleString('en-IN')
+  };
+  saveNotes();
+  renderNotes();
+  document.getElementById('editNoteModal').style.display='none';
+}
+
+function deleteNote(id){
+  if(confirm('Delete this note?')){
+    notes = notes.filter(x=>x.id!==id);
+    saveNotes(); renderNotes();
+  }
+}
+
+function clearNoteFilters(){
+  document.getElementById('noteCategoryFilter').value='';
+  document.getElementById('noteSearchFilter').value='';
+  renderNotes();
+}
 
 // ============ REMINDER SYSTEM ============
 let reminders = JSON.parse(localStorage.getItem('reminders_'+currentUser)||'[]');
@@ -1470,6 +1682,7 @@ function renderAll(){
       document.getElementById('appMain').style.display = 'block';
       loadUserData();
       setTimeout(loadReminders, 300);
+      setTimeout(loadNotes, 400);
     } else { alert('Invalid credentials! Use admin/admin123'); }
   };
   document.getElementById('logoutBtn').onclick = ()=>{ currentUser=null; document.getElementById('appMain').style.display='none'; document.getElementById('loginOverlay').style.display='flex'; };
