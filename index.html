@@ -1041,6 +1041,99 @@ footer{background:#050505;padding:50px 5% 28px;border-top:1px solid rgba(200,151
     </div>
   </div>
 
+
+  <!-- SOLD PROPERTY SECTION -->
+  <div class="card" style="margin-top:20px;border-left:4px solid #2e7d32">
+    <div class="card-header">
+      <span><i class="fas fa-handshake"></i> Sold Properties & Registry 
+        <span id="soldBadge" style="background:#2e7d32;color:white;font-size:11px;padding:2px 7px;border-radius:10px;margin-left:6px">0</span>
+      </span>
+      <button onclick="openAddSoldModal()" style="background:#2e7d32;color:white;border:none;padding:8px 16px;border-radius:20px;cursor:pointer;font-size:13px">+ Add Sale</button>
+    </div>
+
+    <!-- Filters -->
+    <div style="display:flex;gap:8px;flex-wrap:wrap;padding:10px 0;border-bottom:1px solid #e0e0e0;margin-bottom:8px">
+      <select id="soldRegistryFilter" onchange="renderSoldProperties()" style="flex:1;min-width:140px;padding:7px 10px;border:1px solid #cfdfe8;border-radius:20px;font-size:13px;outline:none">
+        <option value="">📋 All Registry Status</option>
+        <option value="Done">✅ Registry Done</option>
+        <option value="Pending">⏳ Registry Pending</option>
+        <option value="In Process">🔄 In Process</option>
+      </select>
+      <input id="soldSearchFilter" type="text" placeholder="🔍 Search by name/property..." oninput="renderSoldProperties()" style="flex:2;min-width:150px;padding:7px 10px;border:1px solid #cfdfe8;border-radius:20px;font-size:13px;outline:none">
+      <button onclick="clearSoldFilters()" style="padding:7px 14px;border:1px solid #e25c5c;border-radius:20px;background:white;color:#e25c5c;font-size:12px;cursor:pointer">🔄 Clear</button>
+    </div>
+
+    <div id="soldCount" style="font-size:12px;color:#6c8a9a;margin-bottom:6px"></div>
+    <div class="list-container" id="soldList"></div>
+  </div>
+
+  <!-- ADD SOLD PROPERTY MODAL -->
+  <div id="addSoldModal" class="modal">
+    <div class="modal-content" style="max-width:480px">
+      <h3>🏷️ Add Sold Property Details</h3>
+      <input id="soldPropertyName" placeholder="🏢 Property Name*">
+      <input id="soldLocation" placeholder="📍 Location (e.g., Mowa, Raipur)">
+      <input id="soldSellerName" placeholder="👤 Seller Name*">
+      <input id="soldBuyerName" placeholder="👤 Buyer Name*">
+      <input id="soldPrice" placeholder="💰 Sale Price (₹) e.g. 45 Lakh">
+      <input id="soldArea" placeholder="📐 Plot/Property Area (e.g., 1200 sq ft)">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div>
+          <label style="font-size:12px;color:#666;margin-bottom:4px;display:block">📅 Date of Sale</label>
+          <input id="soldDate" type="date" style="width:100%;padding:10px;border:1px solid #cfdfe8;border-radius:10px;font-size:14px;outline:none">
+        </div>
+        <div>
+          <label style="font-size:12px;color:#666;margin-bottom:4px;display:block">📋 Registry Date</label>
+          <input id="soldRegistryDate" type="date" style="width:100%;padding:10px;border:1px solid #cfdfe8;border-radius:10px;font-size:14px;outline:none">
+        </div>
+      </div>
+      <select id="soldRegistryStatus">
+        <option value="Done">✅ Registry Done</option>
+        <option value="Pending">⏳ Registry Pending</option>
+        <option value="In Process">🔄 In Process</option>
+      </select>
+      <input id="soldRegistryNo" placeholder="📄 Registry Number (optional)">
+      <input id="soldCommission" placeholder="💵 Commission Earned (₹) (optional)">
+      <textarea id="soldNote" placeholder="📝 Additional Notes..." style="width:100%;padding:10px;border:1px solid #cfdfe8;border-radius:10px;font-size:14px;resize:vertical;min-height:70px;outline:none;font-family:inherit;margin:4px 0"></textarea>
+      <button onclick="saveSoldProperty()" style="background:#2e7d32;color:white;width:100%;padding:12px;border:none;border-radius:20px;font-size:14px;font-weight:700;cursor:pointer;margin-top:8px">✅ Save Sale Record</button>
+      <button onclick="document.getElementById('addSoldModal').style.display='none'" style="width:100%;padding:10px;border:1px solid #ccc;border-radius:20px;background:white;color:#666;cursor:pointer;margin-top:8px;font-size:14px">Cancel</button>
+    </div>
+  </div>
+
+  <!-- EDIT SOLD PROPERTY MODAL -->
+  <div id="editSoldModal" class="modal">
+    <div class="modal-content" style="max-width:480px">
+      <h3>✏️ Edit Sale Record</h3>
+      <input type="hidden" id="editSoldId">
+      <input id="editSoldPropertyName" placeholder="🏢 Property Name*">
+      <input id="editSoldLocation" placeholder="📍 Location">
+      <input id="editSoldSellerName" placeholder="👤 Seller Name*">
+      <input id="editSoldBuyerName" placeholder="👤 Buyer Name*">
+      <input id="editSoldPrice" placeholder="💰 Sale Price (₹)">
+      <input id="editSoldArea" placeholder="📐 Property Area">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div>
+          <label style="font-size:12px;color:#666;margin-bottom:4px;display:block">📅 Date of Sale</label>
+          <input id="editSoldDate" type="date" style="width:100%;padding:10px;border:1px solid #cfdfe8;border-radius:10px;font-size:14px;outline:none">
+        </div>
+        <div>
+          <label style="font-size:12px;color:#666;margin-bottom:4px;display:block">📋 Registry Date</label>
+          <input id="editSoldRegistryDate" type="date" style="width:100%;padding:10px;border:1px solid #cfdfe8;border-radius:10px;font-size:14px;outline:none">
+        </div>
+      </div>
+      <select id="editSoldRegistryStatus">
+        <option value="Done">✅ Registry Done</option>
+        <option value="Pending">⏳ Registry Pending</option>
+        <option value="In Process">🔄 In Process</option>
+      </select>
+      <input id="editSoldRegistryNo" placeholder="📄 Registry Number">
+      <input id="editSoldCommission" placeholder="💵 Commission Earned (₹)">
+      <textarea id="editSoldNote" style="width:100%;padding:10px;border:1px solid #cfdfe8;border-radius:10px;font-size:14px;resize:vertical;min-height:70px;outline:none;font-family:inherit;margin:4px 0"></textarea>
+      <button onclick="updateSoldProperty()" style="background:#2e7d32;color:white;width:100%;padding:12px;border:none;border-radius:20px;font-size:14px;font-weight:700;cursor:pointer;margin-top:8px">💾 Save Changes</button>
+      <button onclick="document.getElementById('editSoldModal').style.display='none'" style="width:100%;padding:10px;border:1px solid #ccc;border-radius:20px;background:white;color:#666;cursor:pointer;margin-top:8px;font-size:14px">Cancel</button>
+    </div>
+  </div>
+
   <!-- Chart Section -->
   <div class="chart-section">
     <h4><i class="fas fa-chart-pie"></i> Empire Buildcon Raipur - Property Analytics (Sold vs Available)</h4>
@@ -1255,6 +1348,182 @@ function clearVisitFilters() {
 }
 
 
+
+
+// ============ SOLD PROPERTY SYSTEM ============
+let soldProperties = [];
+
+function saveSoldData(){ localStorage.setItem('sold_'+(currentUser||'admin'), JSON.stringify(soldProperties)); }
+function loadSoldData(){ soldProperties = JSON.parse(localStorage.getItem('sold_'+(currentUser||'admin'))||'[]'); renderSoldProperties(); }
+function generateSoldId(){ return 'sold_' + Date.now() + '_' + Math.random().toString(36).substr(2,5); }
+
+function openAddSoldModal(){
+  document.getElementById('addSoldModal').style.display='flex';
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('soldDate').value = today;
+  document.getElementById('soldRegistryDate').value = today;
+  document.getElementById('soldPropertyName').focus();
+}
+
+function saveSoldProperty(){
+  const propName = document.getElementById('soldPropertyName').value.trim();
+  const seller = document.getElementById('soldSellerName').value.trim();
+  const buyer = document.getElementById('soldBuyerName').value.trim();
+  if(!propName || !seller || !buyer){ alert('Property name, Seller & Buyer name required!'); return; }
+  
+  const record = {
+    id: generateSoldId(),
+    propertyName: propName,
+    location: document.getElementById('soldLocation').value,
+    sellerName: seller,
+    buyerName: buyer,
+    price: document.getElementById('soldPrice').value,
+    area: document.getElementById('soldArea').value,
+    saleDate: document.getElementById('soldDate').value,
+    registryDate: document.getElementById('soldRegistryDate').value,
+    registryStatus: document.getElementById('soldRegistryStatus').value,
+    registryNo: document.getElementById('soldRegistryNo').value,
+    commission: document.getElementById('soldCommission').value,
+    note: document.getElementById('soldNote').value,
+    createdAt: new Date().toLocaleString('en-IN')
+  };
+  soldProperties.unshift(record);
+  saveSoldData();
+  renderSoldProperties();
+  document.getElementById('addSoldModal').style.display='none';
+  ['soldPropertyName','soldLocation','soldSellerName','soldBuyerName','soldPrice','soldArea','soldRegistryNo','soldCommission','soldNote'].forEach(id=>document.getElementById(id).value='');
+}
+
+function renderSoldProperties(){
+  const regF = document.getElementById('soldRegistryFilter')?.value||'';
+  const searchF = (document.getElementById('soldSearchFilter')?.value||'').toLowerCase();
+
+  let filtered = soldProperties.filter(s=>{
+    const regMatch = !regF || s.registryStatus===regF;
+    const searchMatch = !searchF ||
+      (s.propertyName||'').toLowerCase().includes(searchF) ||
+      (s.sellerName||'').toLowerCase().includes(searchF) ||
+      (s.buyerName||'').toLowerCase().includes(searchF) ||
+      (s.location||'').toLowerCase().includes(searchF);
+    return regMatch && searchMatch;
+  });
+
+  const container = document.getElementById('soldList');
+  const countEl = document.getElementById('soldCount');
+  const badge = document.getElementById('soldBadge');
+  if(badge) badge.innerText = soldProperties.length;
+  if(countEl) countEl.innerText = filtered.length + ' records found';
+
+  if(!filtered.length){
+    container.innerHTML='<div style="padding:20px;text-align:center;color:#aaa">🏷️ No sold property records found</div>';
+    return;
+  }
+
+  const regColor = {'Done':'#2e7d32','Pending':'#f57c00','In Process':'#1565c0'};
+  const regBg = {'Done':'#e8f5e9','Pending':'#fff3e0','In Process':'#e3f2fd'};
+
+  container.innerHTML = filtered.map(s=>`
+    <div style="background:#fff;border:1px solid #e0e0e0;border-left:4px solid ${regColor[s.registryStatus]||'#2e7d32'};border-radius:10px;padding:14px 16px;margin-bottom:10px">
+      
+      <!-- Header -->
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:10px">
+        <div>
+          <strong style="font-size:15px;color:#1a1a1a">🏢 ${escapeHtml(s.propertyName)}</strong>
+          ${s.location ? `<span style="font-size:12px;color:#666;margin-left:8px">📍 ${escapeHtml(s.location)}</span>` : ''}
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="background:${regBg[s.registryStatus]};color:${regColor[s.registryStatus]};font-size:11px;padding:3px 10px;border-radius:10px;font-weight:600">
+            ${s.registryStatus==='Done'?'✅':s.registryStatus==='Pending'?'⏳':'🔄'} Registry ${escapeHtml(s.registryStatus)}
+          </span>
+          <i class="fas fa-edit" onclick="openEditSold('${s.id}')" style="color:#b8860b;background:rgba(184,134,11,0.1);padding:6px 10px;border-radius:6px;cursor:pointer"></i>
+          <i class="fas fa-trash" onclick="deleteSold('${s.id}')" style="color:#e25c5c;background:rgba(226,92,92,0.1);padding:6px 10px;border-radius:6px;cursor:pointer"></i>
+        </div>
+      </div>
+
+      <!-- Buyer Seller -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;background:#f8f9fa;border-radius:8px;padding:10px;margin-bottom:10px">
+        <div>
+          <div style="font-size:10px;color:#888;letter-spacing:1px;margin-bottom:3px">SELLER</div>
+          <div style="font-size:14px;font-weight:600;color:#1a1a1a">👤 ${escapeHtml(s.sellerName)}</div>
+        </div>
+        <div>
+          <div style="font-size:10px;color:#888;letter-spacing:1px;margin-bottom:3px">BUYER</div>
+          <div style="font-size:14px;font-weight:600;color:#1a1a1a">👤 ${escapeHtml(s.buyerName)}</div>
+        </div>
+      </div>
+
+      <!-- Details Grid -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-bottom:8px">
+        ${s.price ? `<div style="background:#fff8e1;padding:8px 10px;border-radius:8px"><div style="font-size:10px;color:#888">SALE PRICE</div><div style="font-size:13px;font-weight:600;color:#b8860b">💰 ${escapeHtml(s.price)}</div></div>` : ''}
+        ${s.area ? `<div style="background:#e8f5e9;padding:8px 10px;border-radius:8px"><div style="font-size:10px;color:#888">AREA</div><div style="font-size:13px;font-weight:600;color:#2e7d32">📐 ${escapeHtml(s.area)}</div></div>` : ''}
+        ${s.saleDate ? `<div style="background:#e3f2fd;padding:8px 10px;border-radius:8px"><div style="font-size:10px;color:#888">SALE DATE</div><div style="font-size:13px;font-weight:600;color:#1565c0">📅 ${escapeHtml(s.saleDate)}</div></div>` : ''}
+        ${s.registryDate ? `<div style="background:#f3e5f5;padding:8px 10px;border-radius:8px"><div style="font-size:10px;color:#888">REGISTRY DATE</div><div style="font-size:13px;font-weight:600;color:#6a1b9a">📋 ${escapeHtml(s.registryDate)}</div></div>` : ''}
+        ${s.registryNo ? `<div style="background:#fce4ec;padding:8px 10px;border-radius:8px"><div style="font-size:10px;color:#888">REGISTRY NO.</div><div style="font-size:13px;font-weight:600;color:#c62828">📄 ${escapeHtml(s.registryNo)}</div></div>` : ''}
+        ${s.commission ? `<div style="background:#e0f7fa;padding:8px 10px;border-radius:8px"><div style="font-size:10px;color:#888">COMMISSION</div><div style="font-size:13px;font-weight:600;color:#00695c">💵 ${escapeHtml(s.commission)}</div></div>` : ''}
+      </div>
+
+      ${s.note ? `<div style="font-size:12px;color:#555;background:#f5f5f5;padding:8px 10px;border-radius:8px">📝 ${escapeHtml(s.note)}</div>` : ''}
+      <div style="font-size:11px;color:#aaa;margin-top:8px">🕐 Added: ${s.createdAt}</div>
+    </div>
+  `).join('');
+}
+
+function openEditSold(id){
+  const s = soldProperties.find(x=>x.id===id);
+  if(!s) return;
+  document.getElementById('editSoldId').value=s.id;
+  document.getElementById('editSoldPropertyName').value=s.propertyName||'';
+  document.getElementById('editSoldLocation').value=s.location||'';
+  document.getElementById('editSoldSellerName').value=s.sellerName||'';
+  document.getElementById('editSoldBuyerName').value=s.buyerName||'';
+  document.getElementById('editSoldPrice').value=s.price||'';
+  document.getElementById('editSoldArea').value=s.area||'';
+  document.getElementById('editSoldDate').value=s.saleDate||'';
+  document.getElementById('editSoldRegistryDate').value=s.registryDate||'';
+  document.getElementById('editSoldRegistryStatus').value=s.registryStatus||'Done';
+  document.getElementById('editSoldRegistryNo').value=s.registryNo||'';
+  document.getElementById('editSoldCommission').value=s.commission||'';
+  document.getElementById('editSoldNote').value=s.note||'';
+  document.getElementById('editSoldModal').style.display='flex';
+}
+
+function updateSoldProperty(){
+  const id = document.getElementById('editSoldId').value;
+  const idx = soldProperties.findIndex(x=>x.id===id);
+  if(idx===-1) return;
+  soldProperties[idx] = {
+    ...soldProperties[idx],
+    propertyName: document.getElementById('editSoldPropertyName').value,
+    location: document.getElementById('editSoldLocation').value,
+    sellerName: document.getElementById('editSoldSellerName').value,
+    buyerName: document.getElementById('editSoldBuyerName').value,
+    price: document.getElementById('editSoldPrice').value,
+    area: document.getElementById('editSoldArea').value,
+    saleDate: document.getElementById('editSoldDate').value,
+    registryDate: document.getElementById('editSoldRegistryDate').value,
+    registryStatus: document.getElementById('editSoldRegistryStatus').value,
+    registryNo: document.getElementById('editSoldRegistryNo').value,
+    commission: document.getElementById('editSoldCommission').value,
+    note: document.getElementById('editSoldNote').value,
+    updatedAt: new Date().toLocaleString('en-IN')
+  };
+  saveSoldData();
+  renderSoldProperties();
+  document.getElementById('editSoldModal').style.display='none';
+}
+
+function deleteSold(id){
+  if(confirm('Delete this sale record?')){
+    soldProperties = soldProperties.filter(x=>x.id!==id);
+    saveSoldData(); renderSoldProperties();
+  }
+}
+
+function clearSoldFilters(){
+  document.getElementById('soldRegistryFilter').value='';
+  document.getElementById('soldSearchFilter').value='';
+  renderSoldProperties();
+}
 
 // ============ NOTES SYSTEM ============
 let notes = [];
@@ -1683,6 +1952,7 @@ function renderAll(){
       loadUserData();
       setTimeout(loadReminders, 300);
       setTimeout(loadNotes, 400);
+      setTimeout(loadSoldData, 500);
     } else { alert('Invalid credentials! Use admin/admin123'); }
   };
   document.getElementById('logoutBtn').onclick = ()=>{ currentUser=null; document.getElementById('appMain').style.display='none'; document.getElementById('loginOverlay').style.display='flex'; };
